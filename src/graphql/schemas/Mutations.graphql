@@ -1,0 +1,13 @@
+input DebtsMutationInput {
+  id: ID
+}
+
+input GoalMutationInput {
+  id: ID
+}
+
+
+type Mutations {
+  createDebt(input: DebtsMutationInput): [ Debt ]
+  createGoal(input: GoalMutationInput): [ Goal ]
+}

@@ -1,0 +1,6 @@
+type Transaction {
+  id: ID!
+  type: String!
+  amount: Int!
+  occurredOn: Date!
+}

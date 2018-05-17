@@ -1,0 +1,6 @@
+type Income {
+  id: ID!
+  date: Date!
+  payee: String!
+  amount: Int!
+}

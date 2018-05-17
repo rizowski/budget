@@ -1,0 +1,27 @@
+type Debt {
+  id: ID!
+  priority: Int!
+  interest: Float!
+  dateLoaned: Date!
+  amount: LoanAmount!
+  payment: Payment!
+  lender: String!
+}
+
+type Payment {
+  original: Int!
+  current: Int!
+  history: [ PaymentHistory ]
+}
+
+# TODO: Move out into own collection?
+type PaymentHistory {
+  id: ID!
+  date: Date!
+  amount: Int!
+}
+
+type LoanAmount {
+  original: Int!
+  current: Int!
+}

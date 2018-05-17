@@ -1,0 +1,17 @@
+type Goal {
+  id: ID!
+  name: String!
+  category: GoalCategory!
+  objectives: [ Objective ]
+}
+
+type Objective {
+  amount: Int!
+  maxPerPaycheck: Int!
+}
+
+type GoalCategory {
+  id: ID!
+  name: String!
+  priorities: [ Int! ]!
+}

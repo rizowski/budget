@@ -1,0 +1,24 @@
+input IncomeQueryInput {
+  id: ID
+  payee: String
+}
+
+input DebtsQueryInput {
+  priority: Int
+}
+
+input GoalsQueryInput {
+  id: ID
+}
+
+input CategoriesQueryInput {
+  id: ID
+}
+
+
+type Query {
+  getIncome(input: IncomeQueryInput): [ Income ]
+  getDebts(input: DebtsQueryInput): [ Debt ]
+  getGoals(input: GoalsQueryInput): [ Goal ]
+  getCategories(input: CategoriesQueryInput): [ GoalCategory ]
+}
