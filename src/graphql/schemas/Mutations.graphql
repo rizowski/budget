@@ -1,13 +1,42 @@
+input IncomeMutationInput {
+  id: ID
+}
+
 input DebtsMutationInput {
   id: ID
 }
 
+input ObjectiveInput {
+  name: String
+  maxPerPaycheck: Int
+}
+
 input GoalMutationInput {
+  id: ID
+  name: String
+  currentAmount: Int
+  categoryId: ID
+  objectives: [ ObjectiveInput ]
+}
+
+input CategoryMutationInput {
   id: ID
 }
 
+input TransactionMutationInput {
+  id: ID
+}
 
 type Mutations {
-  createDebt(input: DebtsMutationInput): [ Debt ]
-  createGoal(input: GoalMutationInput): [ Goal ]
+  createIncome(input: IncomeMutationInput): Income
+  createDebt(input: DebtsMutationInput): Debt
+  createGoal(input: GoalMutationInput): Goal
+  createCategory(input: CategoryMutationInput): GoalCategory
+  createTransaction(input: TransactionMutationInput): Transaction
+
+  updateIncome(input: IncomeMutationInput): Income
+  updateDebt(input: DebtsMutationInput): Debt
+  updateGoal(input: GoalMutationInput): Goal
+  updateCategory(input: CategoryMutationInput): GoalCategory
+  updateTransaction(input: TransactionMutationInput): Transaction
 }

@@ -2,6 +2,8 @@ const { server: Server } = require('hapi');
 const { graphqlHapi } = require('apollo-server-hapi');
 const graphqlPlayground = require('graphql-playground-middleware-hapi').default;
 const { makeExecutableSchema } = require('graphql-tools');
+
+const db = require('../database');
 const { schemas } = require('./schemas');
 const resolvers = require('./resolvers');
 
@@ -17,6 +19,10 @@ const api = {
         typeDefs: schemas,
         resolvers,
       }),
+      context: {
+        statics: {},
+        db,
+      },
     },
     route: {
       cors: true,

@@ -31,6 +31,6 @@ function debt() {
 
 module.exports = {
   generateData(num = 10) {
-    return [...'x'.repeat(num)].map(debt);
+    return Array.from({ length: num }, debt);
   },
 };

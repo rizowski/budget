@@ -11,15 +11,15 @@ type Debt {
 type Payment {
   original: Int!
   current: Int!
-  history: [ PaymentHistory ]
+  # history: [ PaymentHistory ]
 }
 
 # TODO: Move out into own collection?
-type PaymentHistory {
-  id: ID!
-  date: Date!
-  amount: Int!
-}
+# type PaymentHistory {
+#   id: ID!
+#   date: Date!
+#   amount: Int!
+# }
 
 type LoanAmount {
   original: Int!

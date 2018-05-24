@@ -11,7 +11,7 @@
     "local": "nodemon src",
     "start": "parcel public/index.html",
     "precommit": "lint-staged",
-    "test": "mocha",
+    "test": "mocha --opts ./test/mocha.opts",
     "compose:up": "docker-compose -f .local/docker-compose.yml up -d",
     "lint:fix": "npm run lint -- --fix",
     "lint": "xo --prettier"
@@ -72,6 +72,7 @@
     "graphql-tools": "^3.0.1",
     "hapi": "^17.4.0",
     "lodash.omit": "^4.5.0",
+    "lodash.orderby": "^4.6.0",
     "mongodb": "^3.1.0-beta4",
     "shortid": "^2.2.8"
   }

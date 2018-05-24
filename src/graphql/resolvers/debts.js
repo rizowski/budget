@@ -1,13 +1,11 @@
-const { debts } = require('../../database');
-
 module.exports = {
   Query: {
-    getDebts(source, args) {
+    getDebts(source, args, context) {
       const query = {
         priority: args.priority,
       };
 
-      return debts.find(query);
+      return context.db.debts.find(query);
     },
   },
 };

@@ -1,12 +1,24 @@
 const casual = require('casual');
 
+const nameMap = {
+  Emergency: 1,
+  Need: 2,
+  Loan: 3,
+  Bill: 4,
+  Savings: 5,
+  'Yearly Bill': 6,
+  School: 7,
+  Fun: 8,
+  Comfort: 9,
+  'Nice to Have': 10,
+};
+
 function category() {
+  const name = casual.random_element(Object.keys(nameMap));
+
   return {
-    name: casual.random_element(['Emergency', 'Need', 'Nice To Have']),
-    priorities: [
-      casual.random_element([1, 2, 3]),
-      casual.random_element([1, 2, 3]),
-    ],
+    name,
+    priorities: [nameMap[name], casual.random_element([4, 5, 6])],
   };
 }
 
