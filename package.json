@@ -14,7 +14,7 @@
     "test": "mocha --opts ./test/mocha.opts",
     "compose:up": "docker-compose -f .local/docker-compose.yml up -d",
     "lint:fix": "npm run lint -- --fix",
-    "lint": "xo --prettier"
+    "lint": "xo --prettier --quiet"
   },
   "lint-staged": {
     "*.js": ["npm run lint:fix", "git add"],
