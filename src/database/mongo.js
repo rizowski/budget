@@ -18,12 +18,16 @@ async function execOn(collection, func) {
 
 function onCollection(colName) {
   return {
-    create(doc) {
-      doc._id = doc.id ? doc.id : shortId.generate();
-
+    async create(doc) {
+      doc._id = doc.id || shortId.generate();
       delete doc.id;
 
-      return execOn(colName, c => c.insertOne(doc));
+      await execOn(colName, c => c.insertOne(doc));
+
+      doc.id = doc._id;
+      delete doc._id;
+
+      return doc;
     },
     update(query, doc) {
       return execOn(colName, c => c.findAndModify(query, doc));

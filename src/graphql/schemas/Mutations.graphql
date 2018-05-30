@@ -7,16 +7,16 @@ input DebtsMutationInput {
 }
 
 input ObjectiveInput {
-  name: String
+  amount: Int
   maxPerPaycheck: Int
 }
 
 input GoalMutationInput {
   id: ID
   name: String
-  currentAmount: Int
+  amount: Int
   categoryId: ID
-  objectives: [ ObjectiveInput ]
+  objectives: [ ObjectiveInput! ]
 }
 
 input CategoryMutationInput {
@@ -27,7 +27,7 @@ input TransactionMutationInput {
   id: ID
 }
 
-type Mutations {
+type Mutation {
   createIncome(input: IncomeMutationInput): Income
   createDebt(input: DebtsMutationInput): Debt
   createGoal(input: GoalMutationInput): Goal

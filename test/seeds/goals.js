@@ -6,7 +6,7 @@ function goal() {
     id: shortId.generate(),
     categoryId: casual.random_element(['id-1234', 'id-4325', 'id-0234']),
     name: casual.name,
-    currentAmount: casual.integer(0, 1600),
+    amount: casual.integer(0, 1600),
     objectives: [
       {
         amount: casual.integer(0, 1000),

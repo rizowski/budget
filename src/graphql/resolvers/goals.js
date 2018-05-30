@@ -1,8 +1,8 @@
 const orderBy = require('lodash.orderby');
 
-function getCurrentObjective(goal) {
+function getobjective(goal) {
   const [primary] = goal.objectives.filter(o => {
-    return o.amount >= goal.currentAmount;
+    return o.amount >= goal.amount;
   });
 
   return (
@@ -16,15 +16,15 @@ function getCurrentObjective(goal) {
 async function getPriority(goal, context) {
   const category = await context.db.categories.get(goal.categoryId);
   const { name, priorities } = category || { priorities: [] };
-  const { amount } = getCurrentObjective(goal);
+  const { amount } = getobjective(goal);
 
   if (name === 'Emergency' || name === 'Need' || name === 'Bill') {
-    if (goal.currentAmount < amount * 2) {
+    if (goal.amount < amount * 2) {
       return priorities[0];
     }
   }
 
-  if (goal.currentAmount < amount) {
+  if (goal.amount < amount) {
     return priorities[0];
   }
 
@@ -38,8 +38,8 @@ module.exports = {
 
       return category.name;
     },
-    currentObjective(source) {
-      return getCurrentObjective(source);
+    objective(source) {
+      return getobjective(source);
     },
     async priority(source, viewer, context) {
       return getPriority(source, context);
@@ -71,6 +71,8 @@ module.exports = {
     },
   },
   Mutation: {
-    createGoal() {},
+    createGoal(goal, args, context) {
+      return context.db.goals.create(args.input);
+    },
   },
 };

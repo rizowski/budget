@@ -40,14 +40,14 @@ describe('goals resolver', () => {
 
     describe('.priority', () => {
       let goal;
-      let currentObjective;
+      let objective;
       let category;
       let resolver;
       let context;
 
       beforeEach(() => {
         resolver = resolvers.Goal;
-        currentObjective = {
+        objective = {
           amount: 200,
           maxPerPaycheck: 50,
         };
@@ -58,10 +58,10 @@ describe('goals resolver', () => {
         goal = {
           id: 'goal-id',
           name: 'my Goal',
-          currentAmount: 100,
-          currentObjective,
+          amount: 100,
+          objective,
           categoryId: '1234',
-          objectives: [currentObjective],
+          objectives: [objective],
         };
         context = {
           db: {
@@ -99,7 +99,7 @@ describe('goals resolver', () => {
 
       describe('given goal amount is greater than 2x current objective', () => {
         beforeEach(() => {
-          goal.currentAmount = 450;
+          goal.amount = 450;
         });
 
         it('returns priority 2 for Emergency', async () => {
@@ -136,7 +136,7 @@ describe('goals resolver', () => {
         });
 
         it('returns priority 2 if goal amount is amove current objective amount', async () => {
-          goal.currentAmount = 500;
+          goal.amount = 500;
 
           const result = await resolver.priority(goal, null, context);
 
@@ -145,14 +145,14 @@ describe('goals resolver', () => {
       });
     });
 
-    describe('.currentObjective', () => {
+    describe('.objective', () => {
       let source;
       let resolver;
 
       beforeEach(() => {
-        resolver = resolvers.Goal.currentObjective;
+        resolver = resolvers.Goal.objective;
         source = {
-          currentAmount: 0,
+          amount: 0,
           objectives: [
             {
               amount: 10,
@@ -179,7 +179,7 @@ describe('goals resolver', () => {
 
       describe('given the current amount is above the first objective', () => {
         it('returns the second objective', () => {
-          source.currentAmount = 15;
+          source.amount = 15;
 
           const result = resolver(source);
 
@@ -192,7 +192,7 @@ describe('goals resolver', () => {
 
       describe('given the current amount is above all objectives', () => {
         it('returns a non priority objective', () => {
-          source.currentAmount = 30;
+          source.amount = 30;
           const result = resolver(source);
 
           expect(result).to.eql({
@@ -262,7 +262,7 @@ describe('goals resolver', () => {
           {
             categoryId: '2',
             name: 'goal 2',
-            currentAmount: 30,
+            amount: 30,
             objectives: [
               {
                 amount: 100,
@@ -273,7 +273,7 @@ describe('goals resolver', () => {
           {
             categoryId: '1',
             name: 'goal 1',
-            currentAmount: 20,
+            amount: 20,
             objectives: [
               {
                 amount: 50,

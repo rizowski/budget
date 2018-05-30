@@ -5,17 +5,15 @@ const goals = require('./goals');
 const keys = ['Query', 'Mutation'];
 
 function get(key) {
-  return Object.assign({}, debts[key], goals[key]);
+  return { ...debts[key], ...goals[key] };
 }
 
 const queries = get('Query');
-const mutations = get('Mutations');
-const rest = Object.assign({}, omit(debts, keys), omit(goals, keys));
+const mutations = get('Mutation');
+const rest = { ...omit(debts, keys), ...omit(goals, keys) };
 
-module.exports = Object.assign(
-  {
-    Query: queries,
-    Mutations: mutations,
-  },
-  rest
-);
+module.exports = {
+  Query: queries,
+  Mutation: mutations,
+  ...rest,
+};

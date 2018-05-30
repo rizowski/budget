@@ -1,9 +1,9 @@
 type Goal {
   id: ID!
   name: String!
-  currentAmount: Int!
+  amount: Int!
   priority: Int!
-  currentObjective: Objective!
+  objective: Objective!
   category: String!
   objectives: [ Objective ]!
 }
