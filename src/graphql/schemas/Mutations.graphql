@@ -1,44 +1,78 @@
-input IncomeMutationInput {
+input CreateIncomeInput {
   id: ID
 }
 
-input DebtsMutationInput {
+input CreateDebtInput {
   id: ID
 }
 
-input ObjectiveInput {
+input CreateObjectiveInput {
+  amount: Int!
+  maxPerPaycheck: Int!
+}
+
+input CreateGoalInput {
+  id: ID
+  name: String!
+  amount: Int!
+  categoryId: ID!
+  objectives: [ CreateObjectiveInput! ]!
+}
+
+input CreateCategoryInput {
+  id: ID
+  name: String!
+  priorities: [ Int! ]!
+}
+
+input CreateTransactionInput {
+  id: ID
+}
+
+input UpdateIncomeInput {
+  id: ID
+  amount: Int
+  payee: String
+  date: Date
+}
+
+input UpdateDebtInput {
+  id: ID
+}
+
+input UpdateObjectiveInput {
   amount: Int
   maxPerPaycheck: Int
 }
 
-input GoalMutationInput {
+input UpdateGoalInput {
   id: ID
   name: String
   amount: Int
   categoryId: ID
-  objectives: [ ObjectiveInput! ]
+  objectives: [ UpdateObjectiveInput! ]
 }
 
-input CategoryMutationInput {
+input UpdateCategoryInput {
   id: ID
   name: String
   priorities: [ Int! ]
 }
 
-input TransactionMutationInput {
+input UpdateTransactionInput {
   id: ID
 }
 
 type Mutation {
-  createIncome(input: IncomeMutationInput): Income
-  createDebt(input: DebtsMutationInput): Debt
-  createGoal(input: GoalMutationInput): Goal
-  createCategory(input: CategoryMutationInput): GoalCategory
-  createTransaction(input: TransactionMutationInput): Transaction
+  createIncome(input: CreateIncomeInput): Income
+  createDebt(input: CreateDebtInput): Debt
+  createGoal(input: CreateGoalInput): Goal
+  createCategory(input: CreateCategoryInput): GoalCategory
+  createTransaction(input: CreateTransactionInput): Transaction
 
-  updateIncome(input: IncomeMutationInput): Income
-  updateDebt(input: DebtsMutationInput): Debt
-  updateGoal(input: GoalMutationInput): Goal
-  updateCategory(input: CategoryMutationInput): GoalCategory
-  updateTransaction(input: TransactionMutationInput): Transaction
+  updateIncome(id: ID! input: UpdateIncomeInput): Income
+  updateDebt(id: ID! input: UpdateDebtInput): Debt
+  updateGoal(id: ID! input: UpdateGoalInput): Goal
+  updateCategory(id: ID! input: UpdateCategoryInput): GoalCategory
+  updateTransaction(id: ID! input: UpdateTransactionInput): Transaction
 }

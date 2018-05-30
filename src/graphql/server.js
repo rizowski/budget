@@ -19,6 +19,17 @@ const api = {
         typeDefs: schemas,
         resolvers,
       }),
+      formatError(error) {
+        const { message, stack, locations, path } = error;
+
+        return {
+          message,
+          locations,
+          path,
+          stack,
+        };
+      },
+      tracing: true,
       context: {
         statics: {},
         db,

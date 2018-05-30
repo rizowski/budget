@@ -77,5 +77,21 @@ module.exports = {
     createCategory(category, args, context) {
       return context.db.categories.create(args.input);
     },
+    updateGoal(_, args, context) {
+      return context.db.goals.update(
+        {
+          _id: args.id,
+        },
+        args.input
+      );
+    },
+    async updateCategory(_, args, context) {
+      return context.db.categories.update(
+        {
+          _id: args.id,
+        },
+        args.input
+      );
+    },
   },
 };

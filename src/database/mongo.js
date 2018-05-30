@@ -8,9 +8,12 @@ let db;
 async function execOn(collection, func) {
   connection =
     connection ||
-    (await MongoClient.connect('mongodb://localhost:27017', {
-      useNewUrlParser: true,
-    }));
+    (await MongoClient.connect(
+      'mongodb://localhost:27017',
+      {
+        useNewUrlParser: true,
+      }
+    ));
   db = db || connection.db(dbName);
 
   return func(db.collection(collection));
@@ -24,13 +27,18 @@ function onCollection(colName) {
 
       await execOn(colName, c => c.insertOne(doc));
 
-      doc.id = doc._id;
-      delete doc._id;
+      const { _id, ...rest } = doc;
 
-      return doc;
+      return { id: _id, ...rest };
     },
-    update(query, doc) {
-      return execOn(colName, c => c.findAndModify(query, doc));
+    async update(query, doc) {
+      const options = { returnOriginal: false };
+      const updateQuery = { $set: doc };
+      const {
+        value: { _id, ...rest },
+      } = await execOn(colName, c => c.findOneAndUpdate(query, updateQuery, options));
+
+      return { id: _id, ...rest };
     },
     delete() {
       throw new Error('not Implemented');
