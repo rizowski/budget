@@ -74,5 +74,8 @@ module.exports = {
     createGoal(goal, args, context) {
       return context.db.goals.create(args.input);
     },
+    createCategory(category, args, context) {
+      return context.db.categories.create(args.input);
+    },
   },
 };

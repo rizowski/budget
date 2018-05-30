@@ -21,6 +21,8 @@ input GoalMutationInput {
 
 input CategoryMutationInput {
   id: ID
+  name: String
+  priorities: [ Int! ]
 }
 
 input TransactionMutationInput {

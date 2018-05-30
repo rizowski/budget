@@ -1,4 +1,5 @@
 module.exports = {
+  Debt: {},
   Query: {
     getDebts(source, args, context) {
       const query = {
