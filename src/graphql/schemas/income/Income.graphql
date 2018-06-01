@@ -4,3 +4,28 @@ type Income {
   payee: String!
   amount: Int!
 }
+
+input CreateIncomeInput {
+  id: ID
+}
+
+input UpdateIncomeInput {
+  id: ID
+  amount: Int
+  payee: String
+  date: Date
+}
+
+input IncomeQueryInput {
+  id: ID
+  payee: String
+}
+
+extend type Query {
+  getIncome(input: IncomeQueryInput order: OrderInput): [ Income ]!
+}
+
+extend type Mutation {
+  createIncome(input: CreateIncomeInput): Income
+  updateIncome(id: ID! input: UpdateIncomeInput): Income
+}

@@ -1,0 +1,39 @@
+type Bill {
+  id: ID!
+  name: String!
+  payment: Int!
+  frequency: Frequency!
+  startDate: Date!
+  endDate: Date
+}
+
+input CreateBillInput {
+  id: ID
+  name: String!
+  payment: Int!
+  frequency: Frequency!
+  startDate: Date!
+  endDate: Date
+}
+
+input UpdateBillInput {
+  id: ID
+  name: String
+  payment: Int
+  freqency: Frequency
+  startDate: Date
+  endDate: Date
+}
+
+input QueryBillInput {
+  id: ID
+}
+
+extend type Query {
+  getBills(input: QueryBillInput) : [ Bill ]!
+}
+
+extend type Mutation {
+  createBill(input: CreateBillInput) : Bill!
+  updateBill(id: ID! input: UpdateBillInput): Bill!
+}

@@ -8,7 +8,7 @@
     "node": ">=8 <9"
   },
   "scripts": {
-    "local": "nodemon src",
+    "local": "nodemon src -e js,graphql",
     "dev:web": "parcel serve --port 4000 --no-cache public/index.html",
     "start": "parcel public/index.html",
     "precommit": "lint-staged",

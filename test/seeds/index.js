@@ -1,6 +1,6 @@
 const db = require('../../src/database');
 
-const debts = require('./debts');
+const bills = require('./bills');
 const goals = require('./goals');
 const income = require('./income');
 const transactions = require('./transactions');
@@ -18,11 +18,6 @@ const types = [
     seed: categories,
   },
   {
-    name: 'debts',
-    driver: db.debts,
-    seed: debts,
-  },
-  {
     name: 'income',
     driver: db.income,
     seed: income,
@@ -31,6 +26,11 @@ const types = [
     name: 'transactions',
     driver: db.transactions,
     seed: transactions,
+  },
+  {
+    name: 'bill',
+    driver: db.bills,
+    seed: bills,
   },
 ];
 

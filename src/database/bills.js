@@ -1,23 +1,23 @@
 const { onCollection } = require('./mongo');
 
-const collection = 'debts';
+const collection = 'bills';
 
-const debts = onCollection(collection);
+const goals = onCollection(collection);
 
 module.exports = {
   create(doc) {
-    return debts.create(doc);
+    return goals.create(doc);
   },
   update(query, doc) {
-    return debts.update(query, doc);
+    return goals.update(query, doc);
   },
   delete() {
     throw new Error('Not implemented');
   },
   find(query) {
-    return debts.search(query);
+    return goals.search(query);
   },
   get(query) {
-    return debts.get(query);
+    return goals.get(query);
   },
 };

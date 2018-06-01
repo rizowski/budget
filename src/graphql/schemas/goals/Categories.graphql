@@ -1,0 +1,31 @@
+type GoalCategory {
+  id: ID!
+  name: String!
+  priorities: [ Int! ]!
+}
+
+
+input UpdateCategoryInput {
+  id: ID
+  name: String
+  priorities: [ Int! ]
+}
+
+input CreateCategoryInput {
+  id: ID
+  name: String!
+  priorities: [ Int! ]!
+}
+
+input CategoriesQueryInput {
+  id: ID
+}
+
+extend type Query {
+  getCategories(input: CategoriesQueryInput order: OrderInput): [ GoalCategory ]!
+}
+
+extend type Mutation {
+  createCategory(input: CreateCategoryInput): GoalCategory
+  updateCategory(id: ID! input: UpdateCategoryInput): GoalCategory
+}

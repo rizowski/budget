@@ -4,3 +4,24 @@ type Transaction {
   amount: Int!
   occurredOn: Date!
 }
+
+input UpdateTransactionInput {
+  id: ID
+}
+
+input CreateTransactionInput {
+  id: ID
+}
+
+input TransactionsQueryInput {
+  id: ID
+}
+
+extend type Query {
+  getTransactions(input: TransactionsQueryInput order: OrderInput): [ Transaction ]!
+}
+
+extend type Mutation {
+  createTransaction(input: CreateTransactionInput): Transaction
+  updateTransaction(id: ID! input: UpdateTransactionInput): Transaction
+}

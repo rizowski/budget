@@ -1,33 +1,5 @@
-input IncomeQueryInput {
-  id: ID
-  payee: String
-}
-
-input DebtsQueryInput {
-  priority: Int
-}
-
-input GoalsQueryInput {
-  id: ID
-}
-
-input CategoriesQueryInput {
-  id: ID
-}
-
-input TransactionsQueryInput {
-  id: ID
-}
-
 input OrderInput {
   sort: Boolean
 }
 
-
-type Query {
-  getIncome(input: IncomeQueryInput order: OrderInput): [ Income ]!
-  getDebts(input: DebtsQueryInput order: OrderInput): [ Debt ]!
-  getGoals(input: GoalsQueryInput order: OrderInput): [ Goal ]!
-  getCategories(input: CategoriesQueryInput order: OrderInput): [ GoalCategory ]!
-  getTransactions(input: TransactionsQueryInput order: OrderInput): [ Transaction ]!
-}
+type Query

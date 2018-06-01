@@ -29,8 +29,8 @@ class MyNav extends React.Component {
           <Link className={this.classNames('/income')} to="/income">
             Income
           </Link>
-          <Link className={this.classNames('/debt')} to="/debt">
-            Debts
+          <Link className={this.classNames('/bills')} to="/bills">
+            Bills
           </Link>
           <Link className={this.classNames('/transactions')} to="/transactions">
             Transactions

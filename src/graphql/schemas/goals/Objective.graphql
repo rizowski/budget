@@ -1,0 +1,14 @@
+type Objective {
+  amount: Int!
+  maxPerPaycheck: Int!
+}
+
+input CreateObjectiveInput {
+  amount: Int!
+  maxPerPaycheck: Int!
+}
+
+input UpdateObjectiveInput {
+  amount: Int
+  maxPerPaycheck: Int
+}
