@@ -70,7 +70,7 @@ async function start() {
   try {
     await server.start();
   } catch (err) {
-    console.log(`Error while starting server: ${err.message}`);
+    console.log(`Error while starting server:\n${err.message}`);
     stop();
   }
 

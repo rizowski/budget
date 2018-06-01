@@ -1,0 +1,14 @@
+.center {
+  margin: auto;
+  width: 75%;
+  padding: 10px;
+}
+
+.create-goal {
+  height: 330px;
+}
+
+.navigation {
+  width: 100%;
+  margin-bottom: 20px;
+}
