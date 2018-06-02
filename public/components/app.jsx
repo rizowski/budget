@@ -17,9 +17,11 @@ class App extends React.Component {
         </div>
         <Banner title="Welcome" message="To I'm Broke" />
         <div className="row">
-          <Route exact path="/" component={Home} />
-          <Route path="/goals" component={Goals} />
-          <Route path="/income" component={Income} />
+          <div className="container">
+            <Route exact path="/" component={Home} />
+            <Route path="/goals" component={Goals} />
+            <Route path="/income" component={Income} />
+          </div>
         </div>
       </div>
     );

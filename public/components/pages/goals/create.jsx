@@ -1,6 +1,5 @@
 import React from 'react';
 import request from '../../../lib/request';
-import ObjectivesInput from './objectives-input';
 
 class CreateGoals extends React.Component {
   constructor(props) {
@@ -11,6 +10,7 @@ class CreateGoals extends React.Component {
 
     this.state = {
       categories: [],
+      objectives: [],
     };
   }
 
@@ -36,28 +36,41 @@ class CreateGoals extends React.Component {
     };
   }
 
+  handleObjectives(idx, key) {
+    return event => {
+      const { objectives } = this.state;
+      const objective = objectives[idx] || {};
+      objective[key] = event.target.value;
+      objectives[idx] = objective;
+
+      return this.setState({ objectives });
+    };
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    const { name, amount, categoryId } = this.state;
+    const { name, amount, categoryId, objectives } = this.state;
     const payload = {
       name,
       amount: Number(amount),
       categoryId,
+      objectives,
     };
+    console.log(payload);
 
     return request.createGoal(payload);
   }
 
   render() {
     return (
-      <form className="shadow p-3 mb-5 bg-white rounded center create-goal" onSubmit={this.handleSubmit}>
+      <form className="shadow p-3 mb-5 bg-white rounded create-goal" onSubmit={this.handleSubmit}>
         <h3>Create Goal</h3>
         <div className="form-group">
           <label htmlFor="goalName">Goal Name</label>
           <input id="goalName" onChange={this.handleChange('name')} type="text" className="form-control" placeholder="My Goal" />
         </div>
         <div className="form-group">
-          <label htmlFor="goalAmount">Target Amount</label>
+          <label htmlFor="goalAmount">Current Amount</label>
           <div className="input-group mb-3">
             <div className="input-group-prepend">
               <span className="input-group-text">$</span>
@@ -84,9 +97,38 @@ class CreateGoals extends React.Component {
           </div>
         </div>
         <div className="form-group">
-          <ObjectivesInput />
+          <h5>Goal Objectives</h5>
+          <div className="row border valign">
+            <div className="col-4">
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">$</span>
+                </div>
+                <input type="text" onChange={this.handleObjectives(0, 'amount')} className="form-control" placeholder="10" />
+                <div className="input-group-append">
+                  <span className="input-group-text">.00</span>
+                </div>
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">$</span>
+                </div>
+                <input type="text" onChange={this.handleObjectives(0, 'maxPerPaycheck')} className="form-control" placeholder="10" />
+                <div className="input-group-append">
+                  <span className="input-group-text">.00</span>
+                </div>
+              </div>
+            </div>
+            <div className="col-1">
+              <button type="submit" className="btn btn-info ">
+                <i className="fas fa-plus" />
+              </button>
+            </div>
+          </div>
         </div>
-        <button type="submit" className="btn btn-success float-right">
+        <button type="submit" className="btn btn-success">
           Create
         </button>
       </form>

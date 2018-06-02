@@ -62,8 +62,8 @@ const request = {
     return request.graph(
       baseUrl,
       `
-      mutation createGoal($name: String! $amount: Int! $categoryId: ID!){
-        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId }){
+      mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
+        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId objectives: $objectives }) {
           id
         }
       }

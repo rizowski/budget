@@ -5,10 +5,16 @@
 }
 
 .create-goal {
-  height: 330px;
+  margin: auto;
+  padding: 10px;
 }
 
 .navigation {
   width: 100%;
   margin-bottom: 20px;
+}
+
+.valign {
+  display: flex;
+  align-items: center;
 }

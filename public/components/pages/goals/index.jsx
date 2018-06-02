@@ -38,13 +38,13 @@ class Goals extends React.Component {
     // TODO: How can I get TableBody to update when data comes in?
     const { goals, headers } = this.state;
     return (
-      <div>
+      <div className="row">
         <p>
           <a className="btn btn-outline-primary" data-toggle="collapse" href="#create-goal" role="button">
             Create
           </a>
         </p>
-        <div className="collapse multi-collapse" id="create-goal">
+        <div className="collapse multi-collapse container" id="create-goal">
           <CreateGoal goals={this.state.goals} />
         </div>
         <table className="table table-striped border">
