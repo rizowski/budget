@@ -3,6 +3,7 @@ type Goal {
   name: String!
   amount: Int!
   priority: Int!
+  completed: Boolean!
   objective: Objective!
   category: String!
   objectives: [ Objective ]!

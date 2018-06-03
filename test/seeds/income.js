@@ -5,13 +5,13 @@ function income() {
   return {
     id: shortId.generate(),
     date: casual.date('MM/DD/YYYY'),
-    payee: casual.full_name,
+    payee: casual.random_element(['Tashani', 'Colten']),
     amount: casual.integer(500, 3500),
   };
 }
 
 module.exports = {
   generateData(num = 20) {
-    return [...'x'.repeat(num)].map(income);
+    return Array.from({ length: num }, income);
   },
 };

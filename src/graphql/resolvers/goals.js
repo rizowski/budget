@@ -41,8 +41,12 @@ module.exports = {
     objective(source) {
       return getobjective(source);
     },
-    async priority(source, viewer, context) {
+    priority(source, viewer, context) {
       return getPriority(source, context);
+    },
+    completed(source) {
+      const [firstObjective] = source.objectives;
+      return source.amount >= firstObjective.amount;
     },
   },
   Query: {

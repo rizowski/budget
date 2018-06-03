@@ -18,3 +18,7 @@
   display: flex;
   align-items: center;
 }
+
+.table > tbody > tr.completed-goal {
+  background-color: lightGreen;
+}

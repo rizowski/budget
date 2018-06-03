@@ -18,7 +18,7 @@ class MyNav extends React.Component {
 
   render() {
     return (
-      <div className="navigation shadow">
+      <div className="navigation shadow-sm">
         <nav className="nav nav-tabs">
           <Link className={this.classNames('/')} to="/">
             Home

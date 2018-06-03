@@ -1,6 +1,8 @@
 const casual = require('casual');
 const shortId = require('shortid');
 
+const dateFormat = 'YYYY/MM/DD';
+
 function bill() {
   return {
     id: shortId.generate(),
@@ -15,8 +17,8 @@ function bill() {
     ]),
     payment: casual.integer(25, 500),
     frequency: casual.random_element(['MONTHLY', 'YEARLY']),
-    startDate: casual.date('YYYY-MM-DD'),
-    endDate: casual.random_element([casual.date('YYYY-MM-DD'), undefined, undefined, undefined, casual.date('YYYY-MM-DD')]),
+    startDate: casual.date(dateFormat),
+    endDate: casual.random_element([casual.date(dateFormat), undefined, undefined, undefined, casual.date(dateFormat)]),
   };
 }
 

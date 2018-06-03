@@ -38,6 +38,50 @@ describe('goals resolver', () => {
       });
     });
 
+    describe('.completed', () => {
+      let goal;
+      let objective;
+      let resolver;
+
+      beforeEach(() => {
+        resolver = resolvers.Goal.completed;
+        objective = {
+          amount: 100,
+          maxPerPaycheck: 10,
+        };
+        goal = {
+          amount: 100,
+          objectives: [objective],
+        };
+      });
+
+      describe('given the goal has met the first objective', () => {
+        it('returns true', () => {
+          const result = resolver(goal);
+
+          expect(result).to.equal(true);
+        });
+      });
+
+      describe('given the goal has exceeded the first objective', () => {
+        it('returns true', () => {
+          goal.amount = 500;
+          const result = resolver(goal);
+
+          expect(result).to.equal(true);
+        });
+      });
+
+      describe('given the goal has not met the first objective', () => {
+        it('returns false', () => {
+          goal.amount = 50;
+          const result = resolver(goal);
+
+          expect(result).to.equal(false);
+        });
+      });
+    });
+
     describe('.priority', () => {
       let goal;
       let objective;

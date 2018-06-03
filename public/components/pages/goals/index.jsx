@@ -9,7 +9,7 @@ class Goals extends React.Component {
 
     this.state = {
       goals: [],
-      headers: ['Priority', 'Name', 'Amount', 'Category', 'Target Amount', 'Max Per Paycheck'],
+      headers: ['Priority', 'Category', 'Name', 'Amount', 'Target Amount', 'Max Per Paycheck'],
     };
   }
 
@@ -21,12 +21,14 @@ class Goals extends React.Component {
 
   getTableRows(goals) {
     return goals.map(g => {
+      const complete = g.completed;
+      const completeClass = complete ? 'completed-goal' : '';
       return (
-        <tr key={g.id}>
+        <tr key={g.id} className={completeClass}>
           <th scope="row">{g.priority}</th>
+          <td>{g.category}</td>
           <td>{g.name}</td>
           <td>${g.amount}</td>
-          <td>{g.category}</td>
           <td>${g.objective.amount}</td>
           <td>${g.objective.maxPerPaycheck}</td>
         </tr>

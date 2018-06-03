@@ -1,4 +1,8 @@
 module.exports = {
   Income: {},
-  Query: {},
+  Query: {
+    getIncome(source, args, context) {
+      return context.db.income.find();
+    },
+  },
 };

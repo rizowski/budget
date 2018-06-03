@@ -6,6 +6,11 @@ const request = {
   async request(method, url, body) {
     const { data } = await axios[method](url, body);
     console.log(method, url, data);
+    if (data.errors && Array.isArray(data.errors)) {
+      data.errors.map(e => {
+        throw new Error(e.message);
+      });
+    }
 
     return data;
   },
@@ -13,7 +18,7 @@ const request = {
     return request.request('post', url, { query, variables });
   },
   getIncome() {
-    request.graph(
+    return request.graph(
       baseUrl,
       `
           {
@@ -36,6 +41,7 @@ const request = {
         name
         priority
         amount
+        completed
         category
         objective {
           amount
@@ -68,6 +74,38 @@ const request = {
         }
       }
     `,
+      variables
+    );
+  },
+
+  getBills() {
+    return request.graph(
+      baseUrl,
+      `{
+        getBills {
+          id
+          name
+          payment
+          frequency
+          startDate
+          due {
+            date
+            month
+          }
+          endDate
+        }
+      }`
+    );
+  },
+
+  createBill(variables) {
+    return request.graph(
+      baseUrl,
+      `mutation createBill($name: String! $payment: Int! $frequency: Frequency! $startDate: Date! $endDate: Date) {
+        createBill(input: { name: $name, payment: $payment, frequency: $frequency, startDate: $startDate, endDate: $endDate }) {
+          id
+        }
+      }`,
       variables
     );
   },

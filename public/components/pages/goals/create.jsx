@@ -56,14 +56,13 @@ class CreateGoals extends React.Component {
       categoryId,
       objectives,
     };
-    console.log(payload);
 
     return request.createGoal(payload);
   }
 
   render() {
     return (
-      <form className="shadow p-3 mb-5 bg-white rounded create-goal" onSubmit={this.handleSubmit}>
+      <form className="shadow-sm p-3 mb-5 bg-white rounded create-goal" onSubmit={this.handleSubmit}>
         <h3>Create Goal</h3>
         <div className="form-group">
           <label htmlFor="goalName">Goal Name</label>
@@ -99,6 +98,11 @@ class CreateGoals extends React.Component {
         <div className="form-group">
           <h5>Goal Objectives</h5>
           <div className="row border valign">
+            <div className="col-1">
+              <button type="submit" className="btn btn-info ">
+                <i className="fas fa-plus" />
+              </button>
+            </div>
             <div className="col-4">
               <div className="input-group">
                 <div className="input-group-prepend">
@@ -120,11 +124,6 @@ class CreateGoals extends React.Component {
                   <span className="input-group-text">.00</span>
                 </div>
               </div>
-            </div>
-            <div className="col-1">
-              <button type="submit" className="btn btn-info ">
-                <i className="fas fa-plus" />
-              </button>
             </div>
           </div>
         </div>

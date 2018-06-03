@@ -4,8 +4,10 @@ import '../styles/main.css';
 
 import Home from './pages/home';
 import Navigation from './navigation';
+import PageErrors from './pages/page-errors';
 import Goals from './pages/goals';
 import Income from './pages/income';
+import BillsPage from './pages/bills';
 import Banner from './banner';
 
 class App extends React.Component {
@@ -18,9 +20,12 @@ class App extends React.Component {
         <Banner title="Welcome" message="To I'm Broke" />
         <div className="row">
           <div className="container">
-            <Route exact path="/" component={Home} />
-            <Route path="/goals" component={Goals} />
-            <Route path="/income" component={Income} />
+            <PageErrors>
+              <Route exact path="/" component={Home} />
+              <Route path="/goals" component={Goals} />
+              <Route path="/income" component={Income} />
+              <Route path="/bills" component={BillsPage} />
+            </PageErrors>
           </div>
         </div>
       </div>

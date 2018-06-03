@@ -1,16 +1,22 @@
+type Due {
+  month: String!
+  date: Int!
+}
+
 type Bill {
   id: ID!
   name: String!
   payment: Int!
   frequency: Frequency!
   startDate: Date!
+  due: Due!
   endDate: Date
 }
 
 input CreateBillInput {
   id: ID
   name: String!
-  payment: Int!
+  payment: Int! # maybe needs to be a string?
   frequency: Frequency!
   startDate: Date!
   endDate: Date
