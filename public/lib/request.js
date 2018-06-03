@@ -109,6 +109,18 @@ const request = {
       variables
     );
   },
+
+  createCategory(variables) {
+    return request.graph(
+      baseUrl,
+      `mutation createCategory($name: String! $priorities: [Int!]!){
+        createCategory(input: { name: $name, priorities: $priorities }) {
+          id
+        }
+      }`,
+      variables
+    );
+  },
 };
 
 export default request;

@@ -8,7 +8,6 @@ import PageErrors from './pages/page-errors';
 import Goals from './pages/goals';
 import Income from './pages/income';
 import BillsPage from './pages/bills';
-import Banner from './banner';
 
 class App extends React.Component {
   render() {
@@ -17,7 +16,6 @@ class App extends React.Component {
         <div className="row">
           <Navigation />
         </div>
-        <Banner title="Welcome" message="To I'm Broke" />
         <div className="row">
           <div className="container">
             <PageErrors>

@@ -15,7 +15,7 @@
     "test": "mocha --opts ./test/mocha.opts",
     "compose:up": "docker-compose -f .local/docker-compose.yml up -d",
     "lint:fix": "npm run lint -- --fix",
-    "lint": "xo --prettier --quiet"
+    "lint": "xo --quiet"
   },
   "lint-staged": {
     "*.{js}": [
@@ -27,11 +27,12 @@
       "git add"
     ],
     "*.{js,jsx,json,css,md}": [
-      "prettier --write --print-width=160",
+      "prettier --write",
       "git add"
     ]
   },
   "xo": {
+    "prettier": true,
     "envs": [
       "mocha"
     ],
@@ -77,13 +78,12 @@
       "import/no-unassigned-import": "warn",
       "unicorn/no-process-exit": "warn",
       "camelcase": "warn",
-      "indent": [
-        "error",
-        2
-      ]
+      "capitalized-comments": "off",
+      "react/no-array-index-key": "warn"
     }
   },
   "prettier": {
+    "printWidth": 160,
     "semi": true,
     "useTabs": false,
     "tabWidth": 2,
@@ -92,7 +92,9 @@
     "bracketSpacing": true
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
     "casual": "^1.5.19",
     "chai": "^4.1.2",
     "eslint": "^4.19.1",

@@ -108,7 +108,7 @@ class BillsPage extends React.Component {
                   </label>
                 </div>
                 <select className="custom-select" id="frequency" onChange={this.handleChange('frequency')}>
-                  <option disabled selected>
+                  <option disabled defaultValue>
                     Select One
                   </option>
                   <option value="MONTHLY">Monthly</option>

@@ -1,37 +1,31 @@
 const casual = require('casual');
+const short = require('shortid');
 
-const nameMap = {
-  Emergency: 1,
-  Need: 2,
-  Loan: 3,
-  Bill: 4,
-  Savings: 5,
-  'Yearly Bill': 6,
-  School: 7,
-  Fun: 8,
-  Comfort: 9,
-  'Nice to Have': 10,
+const categoryMap = {
+  Emergency: { priority: 1, id: short.generate() },
+  Need: { priority: 2, id: short.generate() },
+  Loan: { priority: 3, id: short.generate() },
+  Bill: { priority: 4, id: short.generate() },
+  Savings: { priority: 5, id: short.generate() },
+  'Yearly Bill': { priority: 6, id: short.generate() },
+  School: { priority: 7, id: short.generate() },
+  Fun: { priority: 8, id: short.generate() },
+  Comfort: { priority: 9, id: short.generate() },
+  'Nice to Have': { priority: 10, id: short.generate() },
 };
 
-function category() {
-  const name = casual.random_element(Object.keys(nameMap));
-
+function category(name, config) {
   return {
+    id: config.id,
     name,
-    priorities: [nameMap[name], casual.random_element([4, 5, 6])],
+    priorities: [config.priority, casual.random_element([14, 15, 16])],
   };
 }
 
 module.exports = {
+  categoryMap,
   category,
   generateData() {
-    const cat1 = category();
-    cat1.id = 'id-1234';
-    const cat2 = category();
-    cat2.id = 'id-4325';
-    const cat3 = category();
-    cat3.id = 'id-0234';
-
-    return [cat1, cat2, cat3];
+    return Object.entries(categoryMap).map(([name, config]) => category(name, config));
   },
 };

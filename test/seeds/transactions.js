@@ -6,7 +6,7 @@ function transaction() {
     id: shortId.generate(),
     type: casual.name,
     amount: casual.integer(1, 50),
-    occurredOn: casual.date('MM/DD/YYYY'),
+    occurredOn: casual.date('YYYY/MM/DD'),
   };
 }
 
