@@ -10,7 +10,7 @@ class Goals extends React.Component {
 
     this.state = {
       goals: [],
-      headers: ['Priority', 'Category', 'Name', 'Current Amount', 'Target Amount', 'Max Per Paycheck'],
+      headers: ['Priority', 'Category', 'Name', 'Type', 'Current Amount', 'Target Amount', 'Max Per Paycheck'],
     };
   }
 
@@ -36,6 +36,7 @@ class Goals extends React.Component {
           <th scope="row">{g.priority}</th>
           <td>{g.category}</td>
           <td>{g.name}</td>
+          <td>{g.type}</td>
           <td>${g.amount}</td>
           <td>${g.objective.amount}</td>
           <td>${g.objective.maxPerPaycheck}</td>

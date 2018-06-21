@@ -39,6 +39,7 @@ const request = {
           name
           priority
           amount
+          type
           completed
           category
           objective {
@@ -62,15 +63,19 @@ const request = {
     );
   },
 
-  createGoal(variables) {
+  getLoans() {
     return request.graph(
       baseUrl,
-      `mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
-        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId objectives: $objectives }) {
+      `{
+        getLoans {
           id
+          name
+          currentAmount
+          originalAmount
+          interestRate
+          startDate
         }
-      }`,
-      variables
+      }`
     );
   },
 
@@ -86,6 +91,18 @@ const request = {
           startDate
         }
       }`
+    );
+  },
+
+  createGoal(variables) {
+    return request.graph(
+      baseUrl,
+      `mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
+        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId objectives: $objectives }) {
+          id
+        }
+      }`,
+      variables
     );
   },
 
@@ -118,6 +135,18 @@ const request = {
       baseUrl,
       `mutation createIncome($amount: Int! $payee: String! $date: Date!) {
         createIncome(input: { amount: $amount, payee: $payee, date: $date }) {
+          id
+        }
+      }`,
+      variables
+    );
+  },
+
+  createLoan(variables) {
+    return request.graph(
+      baseUrl,
+      `mutation createLoan($name: String! $currentAmount: Int! $originalAmount: Int! $startDate: Date! $interestRate: Float!) {
+        createLoan(input: { name: $name, originalAmount: $originalAmount, currentAmount: $currentAmount, startDate: $startDate, interestRate: $interestRate }) {
           id
         }
       }`,

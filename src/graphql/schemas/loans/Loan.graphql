@@ -1,14 +1,35 @@
 type Loan {
-  name: String
+  id: ID!
+  name: String!
   currentAmount: Int!
   originalAmount: Int!
   startDate: Date!
-  repeats: Frequency!
   interestRate: Float!
-  history: [LoanHistory]!
+  # history: [LoanHistory]!
 }
 
 type LoanHistory {
   paymentAmount: Int!
   paymentDate: Date!
+}
+
+input LoanQueryInput {
+  id: ID
+}
+
+input LoanMutationInput {
+  id: ID
+  name: String!
+  currentAmount: Int!
+  originalAmount: Int!
+  startDate: Date!
+  interestRate: Float!
+}
+
+extend type Query {
+  getLoans(input: LoanQueryInput) : [Loan]!
+}
+
+extend type Mutation {
+  createLoan(input: LoanMutationInput): Loan
 }

@@ -3,6 +3,7 @@ const goals = require('./goals');
 const bills = require('./bills');
 const income = require('./income');
 const transactions = require('./transactions');
+const loans = require('./loans');
 
 const keys = ['Query', 'Mutation'];
 
@@ -12,6 +13,7 @@ function get(key) {
     ...bills[key],
     ...income[key],
     ...transactions[key],
+    ...loans[key],
   };
 }
 
@@ -22,6 +24,7 @@ const rest = {
   ...omit(bills, keys),
   ...omit(income, keys),
   ...omit(transactions, keys),
+  ...omit(loans, keys),
 };
 
 module.exports = {

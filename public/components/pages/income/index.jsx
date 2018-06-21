@@ -49,10 +49,8 @@ class Income extends React.Component {
   }
 
   async createIncome(data) {
-    console.log('received');
     await request.createIncome(data);
     this.setState({ modalOpen: false });
-    console.log('Model should close');
   }
 
   openModal() {

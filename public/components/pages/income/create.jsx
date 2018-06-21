@@ -30,7 +30,6 @@ class CreateIncome extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('Called');
     this.props.handleSubmit({
       payee: this.state.payee,
       amount: Number(this.state.amount),

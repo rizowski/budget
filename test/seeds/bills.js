@@ -1,7 +1,6 @@
 const casual = require('casual');
 const shortId = require('shortid');
-
-const dateFormat = 'YYYY/MM/DD';
+const { dateFormat } = require('./common');
 
 const billMap = {
   'Rocky Mountain Power': shortId.generate(),

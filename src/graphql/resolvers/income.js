@@ -1,8 +1,22 @@
+const moment = require('moment');
+const orderBy = require('lodash.orderby');
+
 module.exports = {
-  Income: {},
+  Income: {
+    date(source) {
+      return moment(source.date, 'YYYY/MM/DD').format('MM/DD/YYYY');
+    },
+  },
   Query: {
-    getIncome(source, args, context) {
-      return context.db.income.find();
+    async getIncome(source, args, context) {
+      const results = await context.db.income.find();
+      return orderBy(
+        results,
+        a => {
+          return moment(a.date, 'YYYY/MM/DD').valueOf();
+        },
+        ['desc']
+      );
     },
   },
   Mutation: {

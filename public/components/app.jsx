@@ -8,6 +8,7 @@ import PageErrors from './pages/page-errors';
 import Goals from './pages/goals';
 import Income from './pages/income';
 import BillsPage from './pages/bills';
+import LoansPage from './pages/loans';
 import GoalCategories from './pages/categories';
 
 class App extends React.Component {
@@ -25,6 +26,7 @@ class App extends React.Component {
               <Route path="/goal-categories" component={GoalCategories} />
               <Route path="/income" component={Income} />
               <Route path="/bills" component={BillsPage} />
+              <Route path="/loans" component={LoansPage} />
             </PageErrors>
           </div>
         </div>

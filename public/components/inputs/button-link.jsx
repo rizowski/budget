@@ -10,6 +10,7 @@ class Button extends React.Component {
 
   handleClick(event) {
     event.preventDefault();
+    console.log(this.props.handleClick);
     this.props.handleClick();
   }
 
