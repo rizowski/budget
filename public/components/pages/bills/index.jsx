@@ -1,8 +1,12 @@
 import React from 'react';
 import orderBy from 'lodash.orderby';
-import TableHeaders from '../../table-headers';
+import get from 'lodash.get';
+import moment from 'moment';
+
+import Table from '../../table';
 import request from '../../../lib/request';
-import DatePicker from '../../datepicker';
+import DatePicker from '../../inputs/datepicker';
+import SelectInput from '../../inputs/select';
 
 class BillsPage extends React.Component {
   constructor(props) {
@@ -14,6 +18,19 @@ class BillsPage extends React.Component {
       headers: ['Name', 'Payment Amount', 'Frequency', 'Month Due', 'Date Due', 'Start Date'],
       bills: [],
     };
+  }
+
+  get options() {
+    return [
+      {
+        key: 'MONTHLY',
+        displayValue: 'Monthly',
+      },
+      {
+        key: 'YEARLY',
+        displayValue: 'Yearly',
+      },
+    ];
   }
 
   async componentDidMount() {
@@ -40,13 +57,16 @@ class BillsPage extends React.Component {
 
   getTableRows(bills) {
     return bills.map(b => {
+      const momentDate = moment(b.startDate);
+      const monthDue = momentDate.format('MMMM');
+      const dateDue = momentDate.format('DD');
       return (
         <tr key={b.id}>
           <th scope="row">{b.name}</th>
-          <td>${b.payment}</td>
-          <td>{b.frequency}</td>
-          <td>{b.due.month}</td>
-          <td>{b.due.date}</td>
+          <td>${b.amount}</td>
+          <td>{b.repeats}</td>
+          <td>{monthDue}</td>
+          <td>{dateDue}</td>
           <td>{b.startDate}</td>
         </tr>
       );
@@ -55,21 +75,18 @@ class BillsPage extends React.Component {
 
   handleChange(key) {
     return event => {
-      const { value } = event.target;
-
-      this.setState({ [key]: value });
+      this.setState({ [key]: get(event, 'target.value', event) });
     };
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const { name, payment, frequency, startDate, endDate } = this.state;
+    const { name, payment, repeats, startDate } = this.state;
     const payload = {
       name,
       payment,
-      frequency,
+      repeats,
       startDate,
-      endDate,
     };
 
     return request.createBill(payload);
@@ -100,35 +117,14 @@ class BillsPage extends React.Component {
                 <input type="text" onChange={this.handleChange('payment')} className="form-control" placeholder="55.00" />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" htmlFor="frequency">
-                    Frequency
-                  </label>
-                </div>
-                <select className="custom-select" id="frequency" onChange={this.handleChange('frequency')}>
-                  <option disabled defaultValue>
-                    Select One
-                  </option>
-                  <option value="MONTHLY">Monthly</option>
-                  <option value="YEARLY">Yearly</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="startDate">Start Date</label>
-              <DatePicker id="startDate" handleChange={this.handleChange('startDate')} />
-            </div>
+            <SelectInput label="Frequency" options={this.options} handleChange={this.handleChange('repeat')} />
+            <DatePicker label="Start Date" id="startDate" handleChange={this.handleChange('startDate')} />
             <button type="submit" className="btn btn-success">
               Create Bill
             </button>
           </form>
         </div>
-        <table className="table table-striped border">
-          <TableHeaders headers={this.state.headers} />
-          <tbody>{this.getTableRows(this.state.bills)}</tbody>
-        </table>
+        <Table headers={this.state.headers}>{this.getTableRows(this.state.bills)}</Table>
       </div>
     );
   }

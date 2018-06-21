@@ -3,27 +3,30 @@ const shortId = require('shortid');
 
 const dateFormat = 'YYYY/MM/DD';
 
-function bill() {
+const billMap = {
+  'Rocky Mountain Power': shortId.generate(),
+  'Dominion Energy': shortId.generate(),
+  'Comcast Internet': shortId.generate(),
+  'Water Company': shortId.generate(),
+  'Sofi Student Loans': shortId.generate(),
+  'Personal Loan': shortId.generate(),
+  'Chase Credit Card': shortId.generate(),
+};
+
+function bill(name, id) {
   return {
-    id: shortId.generate(),
-    name: casual.random_element([
-      'Rocky Mountain Power',
-      'Dominion Energy',
-      'Comcast Internet',
-      'Water Company',
-      'Sofi Student Loans',
-      'Personal Loan',
-      'Chase Credit Card',
-    ]),
-    payment: casual.integer(25, 500),
-    frequency: casual.random_element(['MONTHLY', 'YEARLY']),
+    id,
+    name,
+    amount: casual.integer(25, 500),
+    repeats: casual.random_element(['MONTHLY', 'YEARLY']),
     startDate: casual.date(dateFormat),
-    endDate: casual.random_element([casual.date(dateFormat), undefined, undefined, undefined, casual.date(dateFormat)]),
   };
 }
 
 module.exports = {
-  generateData(num = 10) {
-    return Array.from({ length: num }, bill);
+  billMap,
+  bill,
+  generateData() {
+    return Object.entries(billMap).map(([name, id]) => bill(name, id));
   },
 };

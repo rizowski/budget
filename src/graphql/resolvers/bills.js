@@ -1,15 +1,9 @@
-const months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 module.exports = {
   Bill: {
-    due(source) {
-      const date = new Date(source.startDate);
-
-      return {
-        month: months[date.getUTCMonth()],
-        date: date.getUTCDate(),
-      };
-    },
+    // amount(source) {
+    //   // TODO: Change to string
+    //   return source.amount;
+    // },
   },
   Query: {
     getBills(source, args, context) {

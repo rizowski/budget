@@ -1,12 +1,12 @@
 import React from 'react';
 import request from '../../../lib/request';
-import TableHeaders from '../../table-headers';
-import CreateGoal from './create-goal';
-import CreateCategory from './create-category';
+import Table from '../../table';
+import CreateGoal from './create';
 
 class Goals extends React.Component {
   constructor(props) {
     super(props);
+    this.handleGoalSubmit = this.handleGoalSubmit.bind(this);
 
     this.state = {
       goals: [],
@@ -15,6 +15,13 @@ class Goals extends React.Component {
   }
 
   async componentDidMount() {
+    const { data } = await request.getGoals();
+
+    this.setState({ goals: data.getGoals });
+  }
+
+  async handleGoalSubmit(payload) {
+    await request.createGoal(payload);
     const { data } = await request.getGoals();
 
     this.setState({ goals: data.getGoals });
@@ -44,33 +51,22 @@ class Goals extends React.Component {
       <div className="row">
         <div className="row">
           <div className="col">
+            {/* <Button label="Create Goal" color="blueOutline" handleClick={}/> */}
+            {/* <Button label="Create Category" color="blueOutline" handleClick={}/> */}
             <p>
               <a className="btn btn-outline-primary" data-toggle="collapse" href="#create-goal" role="button">
-                Create Goal
-              </a>
-            </p>
-          </div>
-          <div className="col">
-            <p>
-              <a className="btn btn-outline-primary" data-toggle="collapse" href="#create-category" role="button">
-                Create Category
+                Create
               </a>
             </p>
           </div>
         </div>
         <div className="row w-100">
           <div className="collapse multi-collapse container w-100" id="create-goal">
-            <CreateGoal goals={this.state.goals} />
-          </div>
-          <div className="collapse multi-collapse container" id="create-category">
-            <CreateCategory />
+            <CreateGoal goals={this.state.goals} categories={this.state.categories} handleSubmit={this.handleGoalSubmit} />
           </div>
         </div>
 
-        <table className="table table-striped border">
-          <TableHeaders headers={headers} />
-          <tbody>{this.getTableRows(goals)}</tbody>
-        </table>
+        <Table headers={headers}>{this.getTableRows(goals)}</Table>
       </div>
     );
   }

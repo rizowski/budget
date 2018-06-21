@@ -1,15 +1,19 @@
 const casual = require('casual');
 const shortId = require('shortid');
 const categories = require('./categories');
+const bills = require('./bills');
 
 const categoryIds = Object.entries(categories.categoryMap).map(([, config]) => {
   return config.id;
 });
-console.log('CategoryIds', categoryIds);
+const billIds = Object.entries(bills.billMap).map(([, id]) => {
+  return id;
+});
 
 function goal() {
-  return {
+  const goal = {
     id: shortId.generate(),
+    type: casual.random_element(['BILL', 'LOAN', 'SAVINGS']),
     categoryId: casual.random_element(categoryIds),
     name: casual.random_element([
       'Date Fund',
@@ -46,6 +50,14 @@ function goal() {
       },
     ],
   };
+
+  if (goal.type === 'BILL') {
+    goal.billId = casual.random_element(billIds);
+  } else if (goal.type === 'LOAN') {
+    goal.loanId = null; //TODO
+  }
+
+  return goal;
 }
 
 module.exports = {

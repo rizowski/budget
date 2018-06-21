@@ -29,7 +29,7 @@ const api = {
           stack,
         };
       },
-      tracing: true,
+      // tracing: true,
       context: {
         statics: {},
         db,
@@ -68,6 +68,10 @@ async function start() {
   }
 
   try {
+    if (module.parent && process.env.NODE_ENV === 'test') {
+      await server.initialize();
+      return server;
+    }
     await server.start();
   } catch (err) {
     console.log(`Error while starting server:\n${err.message}`);

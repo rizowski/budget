@@ -1,5 +1,8 @@
 import React from 'react';
+import get from 'lodash.get';
 import request from '../../../lib/request';
+import MoneyInput from '../../inputs/money';
+import SelectInput from '../../inputs/select';
 
 class CreateGoals extends React.Component {
   constructor(props) {
@@ -14,6 +17,12 @@ class CreateGoals extends React.Component {
       categories: [],
       objectives: [],
     };
+  }
+
+  get options() {
+    return this.state.categories.map(c => {
+      return { key: c.id, displayValue: c.name };
+    });
   }
 
   async componentDidMount() {
@@ -34,12 +43,13 @@ class CreateGoals extends React.Component {
 
   handleChange(thing) {
     return event => {
-      this.setState({ [thing]: event.target.value });
+      this.setState({ [thing]: get(event, 'target.value', event) });
     };
   }
 
   handleObjectiveChange(index, key) {
     return event => {
+      event.persist();
       this.setState(old => {
         const objectives = old.objectives.map((o, currentIndex) => {
           if (currentIndex !== index) return o;
@@ -59,7 +69,7 @@ class CreateGoals extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     const { name, amount, categoryId, objectives } = this.state;
     const payload = {
@@ -69,7 +79,7 @@ class CreateGoals extends React.Component {
       objectives,
     };
 
-    return request.createGoal(payload);
+    return this.props.handleSubmit(payload);
   }
 
   createObjectives() {
@@ -78,27 +88,11 @@ class CreateGoals extends React.Component {
         <div key={index} className="row valign">
           <div className="col-4">
             Amount:
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">$</span>
-              </div>
-              <input type="text" onChange={this.handleObjectiveChange(index, 'amount')} className="form-control" placeholder="10" />
-              <div className="input-group-append">
-                <span className="input-group-text">.00</span>
-              </div>
-            </div>
+            <MoneyInput handleChange={this.handleObjectiveChange(index, 'amount')} placeholder="10.00" />
           </div>
           <div className="col-4">
             Max Per Paycheck:
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">$</span>
-              </div>
-              <input type="text" onChange={this.handleObjectiveChange(index, 'maxPerPaycheck')} className="form-control" placeholder="10" />
-              <div className="input-group-append">
-                <span className="input-group-text">.00</span>
-              </div>
-            </div>
+            <MoneyInput handleChange={this.handleObjectiveChange(index, 'maxPerPaycheck')} placeholder="5.00" />
           </div>
         </div>
       );
@@ -115,31 +109,9 @@ class CreateGoals extends React.Component {
         </div>
         <div className="form-group">
           <label htmlFor="goalAmount">Current Amount</label>
-          <div className="input-group mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text">$</span>
-            </div>
-            <input type="text" onChange={this.handleChange('amount')} className="form-control" placeholder="55" />
-            <div className="input-group-append">
-              <span className="input-group-text">.00</span>
-            </div>
-          </div>
+          <MoneyInput handleChange={this.handleChange('amount')} placeholder="55" />
         </div>
-        <div className="form-group">
-          <div className="input-group mb-3">
-            <div className="input-group-prepend">
-              <label className="input-group-text" htmlFor="inputGroupSelect01">
-                Category
-              </label>
-            </div>
-            <select className="custom-select" id="inputGroupSelect01" onChange={this.handleChange('categoryId')}>
-              <option disabled defaultValue>
-                Select One
-              </option>
-              {this.getCategories()}
-            </select>
-          </div>
-        </div>
+        <SelectInput label="Category" options={this.options} handleChange={this.handleChange('categoryId')} />
         <div className="form-group">
           <h5>Goal Objectives</h5>
           <a className="btn btn-info" role="button" onClick={this.handleAddObjective}>

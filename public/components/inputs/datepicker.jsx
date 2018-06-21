@@ -25,12 +25,26 @@ class DatePicker extends React.Component {
   }
 
   render() {
-    return <Picker selected={this.state.startDate} onChange={this.handleChange} />;
+    return (
+      <div className="form-group">
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">{this.props.label}</span>
+          </div>
+          <Picker className="form-control w-100" selected={this.state.startDate} onChange={this.handleChange} />
+        </div>
+      </div>
+    );
   }
 }
 
+DatePicker.defaultProps = {
+  label: 'Date',
+};
+
 DatePicker.propTypes = {
   handleChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
 };
 
 export default DatePicker;

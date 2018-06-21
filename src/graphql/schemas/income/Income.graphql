@@ -7,6 +7,9 @@ type Income {
 
 input CreateIncomeInput {
   id: ID
+  amount: Int!
+  payee: String!
+  date: Date!
 }
 
 input UpdateIncomeInput {

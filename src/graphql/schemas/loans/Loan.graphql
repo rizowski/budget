@@ -1,0 +1,14 @@
+type Loan {
+  name: String
+  currentAmount: Int!
+  originalAmount: Int!
+  startDate: Date!
+  repeats: Frequency!
+  interestRate: Float!
+  history: [LoanHistory]!
+}
+
+type LoanHistory {
+  paymentAmount: Int!
+  paymentDate: Date!
+}

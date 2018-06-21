@@ -1,5 +1,4 @@
 import React from 'react';
-import request from '../../../lib/request';
 
 class CreateCategory extends React.Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class CreateCategory extends React.Component {
       priorities,
     };
 
-    return request.createCategory(payload);
+    return this.props.handleSubmit(payload);
   }
 
   handleChange(key) {
@@ -60,7 +59,7 @@ class CreateCategory extends React.Component {
         <div key={i} className="row">
           <div className="col">
             {priorityText}
-            <input id={`cat-priority-${i}`} onChange={this.handleChange('priority')} type="text" className="form-control" placeholder="1" />
+            <input id={`cat-priority-${i}`} onChange={this.handlePriorityChange(i)} type="text" className="form-control" placeholder="1" />
           </div>
         </div>
       );

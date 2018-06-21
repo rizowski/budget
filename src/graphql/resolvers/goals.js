@@ -48,30 +48,38 @@ module.exports = {
       const [firstObjective] = source.objectives;
       return source.amount >= firstObjective.amount;
     },
+    billDetails(source, args, context) {
+      return context.db.bills.get(source.billId);
+    },
+    loanDetails(source, args, context) {
+      return context.db.loans.get(source.loanId);
+    },
   },
   Query: {
-    getCategories(source, args, context) {
+    async getCategories(source, args, context) {
       const query = {};
 
-      return context.db.categories.find(query);
+      const categories = await context.db.categories.find(query);
+
+      return orderBy(categories, 'priorities[0]');
     },
     async getGoals(source, args, context) {
       const query = {};
 
-      const results = await context.db.goals.find(query);
+      const goals = await context.db.goals.find(query);
 
-      const priorities = await Promise.all(
-        results.map(async goal => {
+      const goalsWithDetails = await Promise.all(
+        goals.map(async goal => {
+          const bill = await context.db.bills.get(goal.billId);
           const priority = await getPriority(goal, context);
 
-          return {
-            priority,
-            goal,
-          };
+          goal.billDetails = bill;
+
+          return { priority, goal };
         })
       );
 
-      return orderBy(priorities, 'priority').map(r => r.goal);
+      return orderBy(goalsWithDetails, 'priority').map(r => r.goal);
     },
   },
   Mutation: {

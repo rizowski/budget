@@ -1,34 +1,36 @@
-type Due {
-  month: String!
-  date: Int!
-}
+# type BillHistory {
+#   paymentDate: Date!
+#   payment: Int!
+# }
 
 type Bill {
   id: ID!
   name: String!
-  payment: Int!
-  frequency: Frequency!
+  amount: Int!
   startDate: Date!
-  due: Due!
-  endDate: Date
+  repeats: Frequency!
+  # history: [BillHistory]!
 }
 
 input CreateBillInput {
   id: ID
   name: String!
-  payment: Int! # maybe needs to be a string?
-  frequency: Frequency!
+  amount: Int! # Maybe be a string?
   startDate: Date!
-  endDate: Date
+  repeats: Frequency!
 }
 
 input UpdateBillInput {
   id: ID
   name: String
-  payment: Int
-  freqency: Frequency
+  amount: Int # Maybe be a string?
   startDate: Date
-  endDate: Date
+  repeats: Frequency
+}
+
+input AddBillHistoryInput {
+  paymentDate: Date!
+  payment: Int!
 }
 
 input QueryBillInput {
@@ -42,4 +44,5 @@ extend type Query {
 extend type Mutation {
   createBill(input: CreateBillInput) : Bill!
   updateBill(id: ID! input: UpdateBillInput): Bill!
+  addToBillHistory(id: ID! input: AddBillHistoryInput): Bill!
 }

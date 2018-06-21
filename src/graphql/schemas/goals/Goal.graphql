@@ -1,13 +1,24 @@
+
+
 type Goal {
   id: ID!
   name: String!
   amount: Int!
   priority: Int!
+  type: GoalType!
   completed: Boolean!
   objective: Objective!
   category: String!
   objectives: [ Objective ]!
+  billDetails: Bill
+  loanDetails: Loan
+  # history: [ GoalHistory ]!
 }
+
+# type GoalHistory {
+#   amount: Int!
+#   date: Date!
+# }
 
 input CreateGoalInput {
   id: ID

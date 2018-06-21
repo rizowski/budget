@@ -2,3 +2,9 @@ enum Frequency {
   MONTHLY
   YEARLY
 }
+
+enum GoalType {
+  BILL,
+  LOAN,
+  SAVINGS
+}

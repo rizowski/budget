@@ -17,7 +17,7 @@ module.exports = {
   find(query) {
     return goals.search(query);
   },
-  get(query) {
-    return goals.get(query);
+  get(id) {
+    return goals.get({ _id: id });
   },
 };

@@ -20,60 +20,56 @@ const request = {
   getIncome() {
     return request.graph(
       baseUrl,
-      `
-          {
-            getIncome {
-              id
-              payee
-              date
-              amount
-            }
-          }
-        `
+      `{
+        getIncome {
+          id
+          payee
+          date
+          amount
+        }
+      }`
     );
   },
   getGoals() {
     return request.graph(
       baseUrl,
       `{
-      getGoals {
-        id
-        name
-        priority
-        amount
-        completed
-        category
-        objective {
+        getGoals {
+          id
+          name
+          priority
           amount
-          maxPerPaycheck
+          completed
+          category
+          objective {
+            amount
+            maxPerPaycheck
+          }
         }
-      }
-    }`
+      }`
     );
   },
   getCategories() {
     return request.graph(
       baseUrl,
       `{
-      getCategories{
-        id
-        name
-        priorities
-      }
-    }`
+        getCategories{
+          id
+          name
+          priorities
+        }
+      }`
     );
   },
 
   createGoal(variables) {
     return request.graph(
       baseUrl,
-      `
-      mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
+      `mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
         createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId objectives: $objectives }) {
           id
         }
-      }
-    `,
+      }`,
       variables
     );
   },
@@ -85,14 +81,9 @@ const request = {
         getBills {
           id
           name
-          payment
-          frequency
+          amount
+          repeats
           startDate
-          due {
-            date
-            month
-          }
-          endDate
         }
       }`
     );
@@ -115,6 +106,18 @@ const request = {
       baseUrl,
       `mutation createCategory($name: String! $priorities: [Int!]!){
         createCategory(input: { name: $name, priorities: $priorities }) {
+          id
+        }
+      }`,
+      variables
+    );
+  },
+
+  createIncome(variables) {
+    return request.graph(
+      baseUrl,
+      `mutation createIncome($amount: Int! $payee: String! $date: Date!) {
+        createIncome(input: { amount: $amount, payee: $payee, date: $date }) {
           id
         }
       }`,

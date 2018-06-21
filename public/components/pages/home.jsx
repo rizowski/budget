@@ -8,7 +8,7 @@ class Home extends React.Component {
   }
 
   render() {
-    return <span>$0.00</span>;
+    return <span />;
   }
 }
 
