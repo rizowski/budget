@@ -1,20 +1,22 @@
 import React from 'react';
 import request from '../../../lib/request';
 import Table from '../../table';
-import Modal from '../../modal';
 import CreateLoan from './create';
-import ButtonLink from '../../inputs/button-link';
+import Page from '../page';
 
 class LoansPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loans: [],
-      headers: ['name', 'currentAmount', 'originalAmount', 'startDate', 'interestRate'],
-      modalOpen: false,
+      tableConfig: [
+        { path: 'name', header: 'Name' },
+        { path: 'currentAmount', header: 'Current Amount' },
+        { path: 'originalAmount', header: 'Original Amount' },
+        { path: 'startDate', header: 'Start Date' },
+        { path: 'interestRate', header: 'Interest Rate' },
+      ],
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.createLoan = this.createLoan.bind(this);
   }
 
@@ -24,43 +26,22 @@ class LoansPage extends React.Component {
     this.setState({ loans: data.getLoans });
   }
 
-  getTableRows(loans) {
+  getTableData(loans) {
     return loans.map(l => {
-      const [rate] = (l.interestRate * 100).toString().split('.');
-      return (
-        <tr key={l.id}>
-          <td>{l.name}</td>
-          <td>${l.currentAmount}</td>
-          <td>${l.originalAmount}</td>
-          <td>{l.startDate}</td>
-          <td>{rate}%</td>
-        </tr>
-      );
+      const [interestRate] = (l.interestRate * 100).toString().split('.');
+      return { ...l, interestRate };
     });
-  }
-
-  openModal() {
-    this.setState({ modalOpen: true });
-  }
-
-  closeModal() {
-    this.setState({ modalOpen: false });
   }
 
   async createLoan(data) {
     await request.createLoan(data);
-    this.closeModal();
   }
 
   render() {
     return (
-      <div className="row">
-        <ButtonLink label="Create" color="blueOutline" handleClick={this.openModal} />
-        <Modal isOpen={this.state.modalOpen} onClose={this.closeModal}>
-          <CreateLoan handleSubmit={this.createLoan} />
-        </Modal>
-        <Table headers={this.state.headers}>{this.getTableRows(this.state.loans)}</Table>
-      </div>
+      <Page create={CreateLoan} onCreateSubmit={this.createLoan}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.loans)} />
+      </Page>
     );
   }
 }

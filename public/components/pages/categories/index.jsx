@@ -1,8 +1,13 @@
 import React from 'react';
 
+import { withStyles } from '@material-ui/core/styles';
+
+import Page from '../page';
 import Table from '../../table';
 import request from '../../../lib/request';
 import CreateCategory from './create';
+
+const styles = {};
 
 class GoalCategories extends React.Component {
   constructor(props) {
@@ -10,27 +15,23 @@ class GoalCategories extends React.Component {
 
     this.state = {
       categories: [],
-      headers: ['Name', 'Priorities'],
+      tableConfig: [{ path: 'name', header: 'Name' }, { path: 'priorityList', header: 'Priorities' }],
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
   }
 
-  async handleSubmit(payload) {
+  async handleCreateSubmit(payload) {
+    console.log(payload);
     await request.createCategory(payload);
     const { data } = await request.getCategories();
 
     this.setState({ categories: data.getCategories });
   }
 
-  getTableRows(categories) {
+  getTableData(categories) {
     return categories.map(c => {
-      return (
-        <tr key={c.id}>
-          <td>{c.name}</td>
-          <td>{c.priorities.join(', ')}</td>
-        </tr>
-      );
+      return { ...c, priorityList: c.priorities.join(', ') };
     });
   }
 
@@ -41,27 +42,13 @@ class GoalCategories extends React.Component {
   }
 
   render() {
-    const { categories, headers } = this.state;
+    const { categories, tableConfig } = this.state;
     return (
-      <div className="row">
-        <div className="row">
-          {/* <Button label="Create Category" color="blueOutline" handleClick={}/> */}
-          <div className="col">
-            <p>
-              <a className="btn btn-outline-primary" data-toggle="collapse" href="#create-category" role="button">
-                Create
-              </a>
-            </p>
-          </div>
-        </div>
-        <div className="collapse multi-collapse container" id="create-category">
-          <CreateCategory handleSubmit={this.handleSubmit} categories={this.state.categories} />
-        </div>
-
-        <Table headers={headers}>{this.getTableRows(categories)}</Table>
-      </div>
+      <Page create={CreateCategory} onCreateSubmit={this.handleCreateSubmit}>
+        <Table config={tableConfig} objects={this.getTableData(categories)} />
+      </Page>
     );
   }
 }
 
-export default GoalCategories;
+export default withStyles(styles)(GoalCategories);

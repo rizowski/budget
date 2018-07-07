@@ -4,7 +4,7 @@ const orderBy = require('lodash.orderby');
 module.exports = {
   Income: {
     date(source) {
-      return moment(source.date, 'YYYY/MM/DD').format('MM/DD/YYYY');
+      return moment(source.date, 'MM/DD/YYYY').format('MM/DD/YYYY');
     },
   },
   Query: {
@@ -13,7 +13,7 @@ module.exports = {
       return orderBy(
         results,
         a => {
-          return moment(a.date, 'YYYY/MM/DD').valueOf();
+          return moment(a.date, 'MM/DD/YYYY').valueOf();
         },
         ['desc']
       );

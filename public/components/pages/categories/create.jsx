@@ -1,45 +1,36 @@
 import React from 'react';
+import get from 'lodash.get';
+
+import Input from '../../inputs/input';
 
 class CreateCategory extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddPriority = this.handleAddPriority.bind(this);
     this.state = {
       priorities: [],
     };
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const { name, priorities } = this.state;
-    const payload = {
-      name,
-      priorities,
-    };
-
-    return this.props.handleSubmit(payload);
-  }
-
   handleChange(key) {
     return event => {
-      this.setState({ [key]: event.target.value });
+      this.props.handleChange({
+        key,
+        value: get(event, 'target.value', event),
+      });
     };
   }
 
   handlePriorityChange(index) {
-    return event => {
-      this.setState(old => {
-        const priorities = old.priorities.map((p, nindex) => {
-          if (index !== nindex) return p;
-          return Number(event.target.value);
-        });
-
-        return {
-          priorities,
-        };
+    return value => {
+      const { priorities: oldPriorities } = this.state;
+      const newPriorities = oldPriorities.map((p, nindex) => {
+        if (index !== nindex) return p;
+        return Number(value);
       });
+
+      this.handleChange('priorities')(newPriorities);
     };
   }
 
@@ -49,17 +40,15 @@ class CreateCategory extends React.Component {
         priorities: oldState.priorities.concat(1),
       };
     });
-    // this.setState({ priorities: this.state.priorities.concat(1) });
   }
 
-  createPriorities() {
+  get priorities() {
     return this.state.priorities.map((p, i) => {
       const priorityText = `Priority ${i + 1}:`;
       return (
         <div key={i} className="row">
           <div className="col">
-            {priorityText}
-            <input id={`cat-priority-${i}`} onChange={this.handlePriorityChange(i)} type="text" className="form-control" placeholder="1" />
+            <Input id={`cat-priority-${i}`} label={priorityText} type="number" handleChange={this.handlePriorityChange(i)} placeholder="1" />
           </div>
         </div>
       );
@@ -68,23 +57,18 @@ class CreateCategory extends React.Component {
 
   render() {
     return (
-      <form className="shadow-sm p-3 mb-5 bg-grey rounded create-category" onSubmit={this.handleSubmit}>
-        <h3>Create Category</h3>
-        <div className="form-group">
-          <label htmlFor="categoryName">Category Name</label>
-          <input id="categoryName" onChange={this.handleChange('name')} type="text" className="form-control" placeholder="Emergency" />
-        </div>
+      <div>
+        <Input id="categoryName" label="Category Name" handleChange={this.handleChange('name')} placeholder="Emergency" />
+        <br />
+
         <div className="form-group">
           <h5>Category Priorities</h5>
           <a className="btn btn-info" role="button" onClick={this.handleAddPriority}>
             <i className="fas fa-plus" />
           </a>
-          {this.createPriorities()}
+          {this.priorities}
         </div>
-        <button type="submit" className="btn btn-success">
-          Create
-        </button>
-      </form>
+      </div>
     );
   }
 }

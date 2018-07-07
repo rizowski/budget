@@ -1,39 +1,54 @@
 import React from 'react';
-import Picker from 'react-datepicker';
-import moment from 'moment';
-
 import PropTypes from 'prop-types';
 
-import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
 
-// http://jquense.github.io/react-widgets/api/DateTimePicker/
+const styles = {
+  formControl: {
+    marginTop: '5px',
+    marginBottom: '5px',
+  },
+};
 class DatePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: moment(),
+      date: '',
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(date) {
-    const modifiedDate = moment(date).format('YYYY/MM/DD');
-    this.props.handleChange({ target: { value: modifiedDate } });
+  get defaultValue() {
+    return moment().format('YYYY-MM-DD');
+  }
+
+  handleChange(event) {
+    const modifiedDate = moment(event.target.value).format('YYYY-MM-DD');
+    this.props.handleChange(modifiedDate);
     this.setState({
-      startDate: date,
+      date: event.target.value,
     });
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div className="form-group">
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">{this.props.label}</span>
-          </div>
-          <Picker className="form-control w-100" selected={this.state.startDate} onChange={this.handleChange} />
-        </div>
-      </div>
+      <FormControl className={classes.formControl} fullWidth>
+        <TextField
+          id={this.props.id}
+          label={this.props.label}
+          type="date"
+          onChange={this.handleChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+        />
+      </FormControl>
     );
   }
 }
@@ -47,4 +62,4 @@ DatePicker.propTypes = {
   label: PropTypes.string,
 };
 
-export default DatePicker;
+export default withStyles(styles)(DatePicker);

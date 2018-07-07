@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3000/graphql';
-
 const request = {
   async request(method, url, body) {
     const { data } = await axios[method](url, body);
@@ -14,12 +12,11 @@ const request = {
 
     return data;
   },
-  graph(url, query, variables) {
-    return request.request('post', url, { query, variables });
+  graph(query, variables) {
+    return request.request('post', '/graphql', { query, variables });
   },
   getIncome() {
     return request.graph(
-      baseUrl,
       `{
         getIncome {
           id
@@ -32,7 +29,6 @@ const request = {
   },
   getGoals() {
     return request.graph(
-      baseUrl,
       `{
         getGoals {
           id
@@ -52,7 +48,6 @@ const request = {
   },
   getCategories() {
     return request.graph(
-      baseUrl,
       `{
         getCategories{
           id
@@ -65,7 +60,6 @@ const request = {
 
   getLoans() {
     return request.graph(
-      baseUrl,
       `{
         getLoans {
           id
@@ -81,7 +75,6 @@ const request = {
 
   getBills() {
     return request.graph(
-      baseUrl,
       `{
         getBills {
           id
@@ -96,9 +89,8 @@ const request = {
 
   createGoal(variables) {
     return request.graph(
-      baseUrl,
-      `mutation createGoal($name: String! $amount: Int! $categoryId: ID! $objectives: [CreateObjectiveInput!]!) {
-        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId objectives: $objectives }) {
+      `mutation createGoal($name: String! $amount: Int! $categoryId: ID! $type: GoalType! $objectives: [CreateObjectiveInput!]!) {
+        createGoal(input: { name: $name, amount: $amount, categoryId: $categoryId type: $type, objectives: $objectives }) {
           id
         }
       }`,
@@ -108,9 +100,8 @@ const request = {
 
   createBill(variables) {
     return request.graph(
-      baseUrl,
-      `mutation createBill($name: String! $payment: Int! $frequency: Frequency! $startDate: Date! $endDate: Date) {
-        createBill(input: { name: $name, payment: $payment, frequency: $frequency, startDate: $startDate, endDate: $endDate }) {
+      `mutation createBill($name: String! $amount: Int! $repeats: Frequency! $startDate: Date!) {
+        createBill(input: { name: $name, amount: $amount, repeats: $repeats, startDate: $startDate }) {
           id
         }
       }`,
@@ -120,7 +111,6 @@ const request = {
 
   createCategory(variables) {
     return request.graph(
-      baseUrl,
       `mutation createCategory($name: String! $priorities: [Int!]!){
         createCategory(input: { name: $name, priorities: $priorities }) {
           id
@@ -132,7 +122,6 @@ const request = {
 
   createIncome(variables) {
     return request.graph(
-      baseUrl,
       `mutation createIncome($amount: Int! $payee: String! $date: Date!) {
         createIncome(input: { amount: $amount, payee: $payee, date: $date }) {
           id
@@ -144,7 +133,6 @@ const request = {
 
   createLoan(variables) {
     return request.graph(
-      baseUrl,
       `mutation createLoan($name: String! $currentAmount: Int! $originalAmount: Int! $startDate: Date! $interestRate: Float!) {
         createLoan(input: { name: $name, originalAmount: $originalAmount, currentAmount: $currentAmount, startDate: $startDate, interestRate: $interestRate }) {
           id

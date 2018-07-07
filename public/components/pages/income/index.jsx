@@ -1,9 +1,8 @@
 import React from 'react';
 import request from '../../../lib/request';
 import Table from '../../table';
+import Page from '../page';
 import CreateIncome from './create';
-import Modal from '../../modal';
-import ButtonLink from '../../inputs/button-link';
 
 class Income extends React.Component {
   constructor(props) {
@@ -11,10 +10,8 @@ class Income extends React.Component {
 
     this.state = {
       income: [],
-      headers: ['Date', 'Payee', 'Amount'],
+      tableConfig: [{ path: 'date', header: 'Date' }, { path: 'payee', header: 'Payee' }, { path: 'amount', header: 'Amount' }],
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.createIncome = this.createIncome.bind(this);
   }
 
@@ -36,29 +33,12 @@ class Income extends React.Component {
     );
   }
 
-  createRows(income) {
-    return income.map(i => {
-      return (
-        <tr key={i.id}>
-          <td>{i.date}</td>
-          <th scope="row">{i.payee}</th>
-          <td>${i.amount}</td>
-        </tr>
-      );
-    });
+  getTableData(income) {
+    return income;
   }
 
   async createIncome(data) {
     await request.createIncome(data);
-    this.setState({ modalOpen: false });
-  }
-
-  openModal() {
-    this.setState({ modalOpen: true });
-  }
-
-  closeModal() {
-    this.setState({ modalOpen: false });
   }
 
   render() {
@@ -67,19 +47,9 @@ class Income extends React.Component {
     }
 
     return (
-      <div className="row">
-        <div className="row">
-          <div className="col">
-            <ButtonLink label="Create" color="blueOutline" handleClick={this.openModal} />
-          </div>
-        </div>
-
-        <Modal isOpen={this.state.modalOpen} onClose={this.closeModal}>
-          <CreateIncome handleSubmit={this.createIncome} />
-        </Modal>
-
-        <Table headers={this.state.headers}>{this.createRows(this.state.income)}</Table>
-      </div>
+      <Page create={CreateIncome} onCreateSubmit={this.createIncome}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.income)} />
+      </Page>
     );
   }
 }

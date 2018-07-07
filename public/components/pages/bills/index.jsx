@@ -3,10 +3,12 @@ import orderBy from 'lodash.orderby';
 import get from 'lodash.get';
 import moment from 'moment';
 
+import Page from '../page';
 import Table from '../../table';
 import request from '../../../lib/request';
-import DatePicker from '../../inputs/datepicker';
-import SelectInput from '../../inputs/select';
+import Modal from '../../modal';
+import ButtonLink from '../../inputs/button-link';
+import CreateBill from './create';
 
 class BillsPage extends React.Component {
   constructor(props) {
@@ -15,7 +17,14 @@ class BillsPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      headers: ['Name', 'Payment Amount', 'Frequency', 'Month Due', 'Date Due', 'Start Date'],
+      tableConfig: [
+        { path: 'name', header: 'Name' },
+        { path: 'amount', header: 'Payment Amount' },
+        { path: 'repeats', header: 'Frequency' },
+        { path: 'monthDue', header: 'Month Due' },
+        { path: 'dateDue', header: 'Date Due' },
+        { path: 'startDate', header: 'Start Date' },
+      ],
       bills: [],
     };
   }
@@ -55,21 +64,13 @@ class BillsPage extends React.Component {
     }
   }
 
-  getTableRows(bills) {
+  getTableData(bills) {
     return bills.map(b => {
-      const momentDate = moment(b.startDate);
+      const momentDate = moment(b.startDate, 'YYYY-MM-DD');
       const monthDue = momentDate.format('MMMM');
       const dateDue = momentDate.format('DD');
-      return (
-        <tr key={b.id}>
-          <th scope="row">{b.name}</th>
-          <td>${b.amount}</td>
-          <td>{b.repeats}</td>
-          <td>{monthDue}</td>
-          <td>{dateDue}</td>
-          <td>{b.startDate}</td>
-        </tr>
-      );
+
+      return { ...b, monthDue, dateDue };
     });
   }
 
@@ -79,53 +80,22 @@ class BillsPage extends React.Component {
     };
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const { name, payment, repeats, startDate } = this.state;
-    const payload = {
-      name,
-      payment,
-      repeats,
-      startDate,
-    };
-
-    return request.createBill(payload);
+  async handleSubmit(event) {
+    const { data } = await request.createBill(event);
+    const { startDate, ...rest } = event;
+    this.setState(old => {
+      return {
+        bills: old.bills.concat({ id: data.createBill.id, startDate: moment(startDate, 'YYYY-MM-DD').format('MM/DD/YYYY'), ...rest }),
+      };
+    });
   }
 
   /* Coming up list and calendar */
   render() {
     return (
-      <div className="row">
-        <p>
-          <a className="btn btn-outline-primary" data-toggle="collapse" href="#create-bill" role="button">
-            Create
-          </a>
-        </p>
-        <div className="collapse multi-collapse container" id="create-bill">
-          <form className="shadow-sm p-3 mb-5 bg-grey rounded create-bill" onSubmit={this.handleSubmit}>
-            <h3>Create Bill</h3>
-            <div className="form-group">
-              <label htmlFor="bill-name">Bill Name</label>
-              <input id="bill-name" onChange={this.handleChange('name')} type="text" className="form-control" placeholder="Chase Credit Card" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="paymentAmount">Payment Amount</label>
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">$</span>
-                </div>
-                <input type="text" onChange={this.handleChange('payment')} className="form-control" placeholder="55.00" />
-              </div>
-            </div>
-            <SelectInput label="Frequency" options={this.options} handleChange={this.handleChange('repeat')} />
-            <DatePicker label="Start Date" id="startDate" handleChange={this.handleChange('startDate')} />
-            <button type="submit" className="btn btn-success">
-              Create Bill
-            </button>
-          </form>
-        </div>
-        <Table headers={this.state.headers}>{this.getTableRows(this.state.bills)}</Table>
-      </div>
+      <Page create={CreateBill} onCreateSubmit={this.handleSubmit}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.bills)} />
+      </Page>
     );
   }
 }

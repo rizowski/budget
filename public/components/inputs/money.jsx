@@ -26,12 +26,17 @@ class MoneyInput extends React.Component {
 
   render() {
     return (
-      <div className="input-group mb-3">
-        <div className="input-group-prepend">
-          <span className="input-group-text">$</span>
+      <div>
+        <div className="form-group">
+          <label htmlFor="name">{this.props.label}</label>
+          <div className="input-group mb-3">
+            <div className="input-group-prepend">
+              <span className="input-group-text">$</span>
+            </div>
+            <input type="text" onChange={this.handleChange} className="form-control" placeholder={this.props.placeholder} />
+            {this.appendDecimal}
+          </div>
         </div>
-        <input type="text" onChange={this.handleChange} className="form-control" placeholder={this.props.placeholder} />
-        {this.appendDecimal}
       </div>
     );
   }
@@ -41,9 +46,11 @@ MoneyInput.defaultProps = {
   decimalAmount: '00',
   appendDecimal: false,
   placeholder: '10',
+  label: '',
 };
 
 MoneyInput.propTypes = {
+  label: PropTypes.string,
   decimalAmount: PropTypes.string,
   appendDecimal: PropTypes.bool,
   placeholder: PropTypes.string,

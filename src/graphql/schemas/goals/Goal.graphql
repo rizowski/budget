@@ -25,6 +25,7 @@ input CreateGoalInput {
   name: String!
   amount: Int!
   categoryId: ID!
+  type: GoalType!
   objectives: [ CreateObjectiveInput! ]!
 }
 
@@ -32,6 +33,7 @@ input UpdateGoalInput {
   id: ID
   name: String
   amount: Int
+  type: GoalType
   categoryId: ID
   objectives: [ UpdateObjectiveInput! ]
 }
