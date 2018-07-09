@@ -10,6 +10,7 @@ class Goals extends React.Component {
     super(props);
 
     this.handleGoalSubmit = this.handleGoalSubmit.bind(this);
+    this.deleteGoal = this.deleteGoal.bind(this);
 
     this.state = {
       goals: [],
@@ -38,6 +39,16 @@ class Goals extends React.Component {
     this.setState({ goals: data.getGoals });
   }
 
+  deleteGoal(id) {
+    this.setState(old => {
+      return {
+        goals: old.goals.filter(b => {
+          return b.id !== id;
+        }),
+      };
+    });
+  }
+
   getTableData(goals) {
     return goals;
   }
@@ -46,8 +57,8 @@ class Goals extends React.Component {
     const { goals } = this.state;
 
     return (
-      <Page create={CreateGoal} onCreateSubmit={this.handleGoalSubmit}>
-        <Table config={this.state.tableConfig} objects={this.getTableData(goals)} />
+      <Page thing="Goal" create={CreateGoal} onCreateSubmit={this.handleGoalSubmit}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(goals)} handleDelete={this.deleteGoal} />
       </Page>
     );
   }

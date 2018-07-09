@@ -4,6 +4,7 @@ import Table from '../../table';
 import Page from '../page';
 import CreateIncome from './create';
 
+// TODO: https://github.com/clauderic/react-sortable-hoc
 class Income extends React.Component {
   constructor(props) {
     super(props);
@@ -13,11 +14,13 @@ class Income extends React.Component {
       tableConfig: [{ path: 'date', header: 'Date' }, { path: 'payee', header: 'Payee' }, { path: 'amount', header: 'Amount' }],
     };
     this.createIncome = this.createIncome.bind(this);
+    this.deleteIncome = this.deleteIncome.bind(this);
   }
 
   async componentDidMount() {
     try {
       const { data } = await request.getIncome();
+      console.log(data);
 
       this.setState({ income: data.getIncome });
     } catch (e) {
@@ -37,8 +40,21 @@ class Income extends React.Component {
     return income;
   }
 
-  async createIncome(data) {
-    await request.createIncome(data);
+  deleteIncome(id) {
+    this.setState(old => {
+      return {
+        income: old.income.filter(b => {
+          return b.id !== id;
+        }),
+      };
+    });
+  }
+
+  async createIncome(payload) {
+    await request.createIncome(payload);
+    const { data } = await request.getIncome();
+
+    this.setState({ income: data.getIncome });
   }
 
   render() {
@@ -47,8 +63,8 @@ class Income extends React.Component {
     }
 
     return (
-      <Page create={CreateIncome} onCreateSubmit={this.createIncome}>
-        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.income)} />
+      <Page thing="Income" create={CreateIncome} onCreateSubmit={this.createIncome}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.income)} handleDelete={this.deleteIncome} />
       </Page>
     );
   }

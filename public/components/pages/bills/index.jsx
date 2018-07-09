@@ -1,13 +1,11 @@
 import React from 'react';
-import orderBy from 'lodash.orderby';
 import get from 'lodash.get';
+import orderBy from 'lodash.orderby';
 import moment from 'moment';
 
 import Page from '../page';
 import Table from '../../table';
 import request from '../../../lib/request';
-import Modal from '../../modal';
-import ButtonLink from '../../inputs/button-link';
 import CreateBill from './create';
 
 class BillsPage extends React.Component {
@@ -15,6 +13,7 @@ class BillsPage extends React.Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteBill = this.deleteBill.bind(this);
 
     this.state = {
       tableConfig: [
@@ -80,6 +79,18 @@ class BillsPage extends React.Component {
     };
   }
 
+  deleteBill(id) {
+    this.setState(old => {
+      const newBills = old.bills.filter(b => {
+        return b.id !== id;
+      });
+
+      return {
+        bills: newBills,
+      };
+    });
+  }
+
   async handleSubmit(event) {
     const { data } = await request.createBill(event);
     const { startDate, ...rest } = event;
@@ -93,8 +104,8 @@ class BillsPage extends React.Component {
   /* Coming up list and calendar */
   render() {
     return (
-      <Page create={CreateBill} onCreateSubmit={this.handleSubmit}>
-        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.bills)} />
+      <Page thing="Bill" create={CreateBill} onCreateSubmit={this.handleSubmit}>
+        <Table config={this.state.tableConfig} objects={this.getTableData(this.state.bills)} handleDelete={this.deleteBill} />
       </Page>
     );
   }

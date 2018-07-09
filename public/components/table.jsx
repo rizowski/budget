@@ -21,25 +21,47 @@ class MyTable extends React.Component {
     this.paths = props.config.map(({ path }) => {
       return path;
     });
+
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
   get headers() {
-    const { config } = this.props;
-
-    return config.map(({ header }) => {
+    const { config, handleDelete } = this.props;
+    const headers = config.map(({ header }) => {
       return <TableCell key={header}>{header}</TableCell>;
     });
+
+    if (handleDelete) {
+      headers.push(<TableCell key="delete">Remove</TableCell>);
+    }
+
+    return headers;
   }
 
   get rows() {
-    const { objects } = this.props;
+    const { objects, handleDelete } = this.props;
 
     return objects.map((o, index) => {
       const tableCells = this.paths.map(p => {
         return <TableCell key={p}>{get(o, p)}</TableCell>;
       });
+
+      if (handleDelete) {
+        tableCells.push(
+          <TableCell key={`${o.id}-delete`} onClick={this.handleDeleteClick(o.id)}>
+            <i className="far fa-minus-square fa-2x" />
+          </TableCell>
+        );
+      }
+
       return <TableRow key={o.id || index}>{tableCells}</TableRow>;
     });
+  }
+
+  handleDeleteClick(id) {
+    return () => {
+      this.props.handleDelete(id);
+    };
   }
 
   render() {
@@ -56,15 +78,19 @@ class MyTable extends React.Component {
   }
 }
 
-Table.defaultProps = {
+MyTable.defaultProps = {
   data: [],
   headers: [],
+  handleDelete: null,
 };
 
-Table.propTypes = {
+MyTable.propTypes = {
+  config: PropTypes.arrayOf(PropTypes.object).isRequired,
   headers: PropTypes.array,
   data: PropTypes.array,
   children: PropTypes.arrayOf(PropTypes.element),
+  classes: PropTypes.object.isRequired,
+  handleDelete: PropTypes.func,
 };
 
 export default withStyles(styles)(MyTable);

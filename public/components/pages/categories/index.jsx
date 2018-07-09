@@ -9,6 +9,7 @@ import CreateCategory from './create';
 
 const styles = {};
 
+// TODO: https://github.com/clauderic/react-sortable-hoc
 class GoalCategories extends React.Component {
   constructor(props) {
     super(props);
@@ -19,10 +20,10 @@ class GoalCategories extends React.Component {
     };
 
     this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
+    this.deleteCategory = this.deleteCategory.bind(this);
   }
 
   async handleCreateSubmit(payload) {
-    console.log(payload);
     await request.createCategory(payload);
     const { data } = await request.getCategories();
 
@@ -35,6 +36,16 @@ class GoalCategories extends React.Component {
     });
   }
 
+  deleteCategory(id) {
+    this.setState(old => {
+      return {
+        categories: old.categories.filter(b => {
+          return b.id !== id;
+        }),
+      };
+    });
+  }
+
   async componentDidMount() {
     const { data } = await request.getCategories();
 
@@ -44,8 +55,8 @@ class GoalCategories extends React.Component {
   render() {
     const { categories, tableConfig } = this.state;
     return (
-      <Page create={CreateCategory} onCreateSubmit={this.handleCreateSubmit}>
-        <Table config={tableConfig} objects={this.getTableData(categories)} />
+      <Page thing="Category" create={CreateCategory} onCreateSubmit={this.handleCreateSubmit}>
+        <Table config={tableConfig} objects={this.getTableData(categories)} handleDelete={this.deleteCategory} />
       </Page>
     );
   }

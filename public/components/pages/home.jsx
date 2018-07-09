@@ -1,9 +1,7 @@
 import React from 'react';
 import groupBy from 'lodash.groupby';
-import PieChart from '../graphs/pie';
 import request from '../../lib/request';
 import Table from '../table';
-import finance from '../../lib/finance';
 import Page from './page';
 
 class Home extends React.Component {
@@ -13,7 +11,14 @@ class Home extends React.Component {
       goals: [],
       loans: [],
       income: [],
-      headers: ['Priority', 'Goal', 'Current Amount', 'Max Per Paycheck', 'Budget', 'Total'],
+      headers: [
+        { path: 'priority', header: 'Priority' },
+        { path: 'name', header: 'Goal' },
+        { path: 'amount', header: 'Current Amount' },
+        { path: 'objective', header: 'Max Per Paycheck' },
+        { path: 'budgetAmount', header: 'Budget' },
+        { path: 'runningTotal', header: 'Total' },
+      ],
     };
   }
 
@@ -54,7 +59,7 @@ class Home extends React.Component {
         }
       }
       runningTotal -= budgetAmount;
-      return [g.priority, g.name, g.amount, g.objective.maxPerPaycheck, budgetAmount, runningTotal];
+      return { priority: g.priority, name: g.name, amount: g.amount, objective: g.objective.maxPerPaycheck, budgetAmount, runningTotal };
     });
   }
 
@@ -65,11 +70,15 @@ class Home extends React.Component {
     this.setState({ income: incomeData.getIncome });
     const { data: loanData } = await request.getLoans();
 
-    this.setState({ loans: loanData.getLoans });
+    this.setState({ loans: loanData.getLoans || [] });
   }
 
   render() {
-    return <Page>{/* <Table headers={this.state.headers} data={this.tableData} /> */}</Page>;
+    return (
+      <Page>
+        <Table config={this.state.headers} objects={this.tableData} />
+      </Page>
+    );
   }
 }
 

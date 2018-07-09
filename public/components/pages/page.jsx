@@ -40,15 +40,16 @@ class Page extends React.Component {
     if (!this.props.create) {
       return null;
     }
+    const { thing } = this.props;
 
     const childProps = { handleChange: this.handleChange('create') };
-
+    const createTitle = `Create ${thing}`;
     return (
       <div style={{ padding: '10px' }}>
         <Button variant="outlined" color="primary" onClick={this.showCreate}>
-          Create
+          Create {thing}
         </Button>
-        <Modal open={this.state.createShown} title="Create" onSubmit={this.createSubmit} onClose={this.handleCancel}>
+        <Modal open={this.state.createShown} title={createTitle} onSubmit={this.createSubmit} onClose={this.handleCancel}>
           {React.createElement(this.props.create, childProps)}
         </Modal>
       </div>

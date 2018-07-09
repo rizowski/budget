@@ -80,14 +80,27 @@ class CreateGoals extends React.Component {
     });
   }
 
+  removeObjective(index) {
+    return () => {
+      this.setState(old => {
+        return {
+          objectives: old.objectives.filter((_, i) => i !== index),
+        };
+      });
+    };
+  }
+
   createObjectives() {
     return this.state.objectives.map((o, index) => {
       return (
         <div key={index} className="row valign">
-          <div className="col-6">
+          <div className="col-2">
+            <i className="far fa-minus-square fa-2x" onClick={this.removeObjective(index)} />
+          </div>
+          <div className="col-5">
             <Input id={`${o.id}${index}-amount`} type="number" label="Amount" handleChange={this.handleObjectiveChange(index, 'amount')} placeholder="10.00" />
           </div>
-          <div className="col-6">
+          <div className="col-5">
             <Input
               id={`${o.id}${index}-mpp`}
               type="number"

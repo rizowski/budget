@@ -1,6 +1,6 @@
 import React from 'react';
 import get from 'lodash.get';
-import MoneyInput from '../../inputs/money';
+import Input from '../../inputs/input';
 import DatePicker from '../../inputs/datepicker';
 
 class CreateLoan extends React.Component {
@@ -18,13 +18,13 @@ class CreateLoan extends React.Component {
 
   render() {
     return (
-      <form>
-        <input id="name" onChange={this.handleChange('name')} type="text" placeholder="Chase Credit Card" />
-        <MoneyInput label="Original Amount" handleChange={this.handleChange('originalAmount')} />
-        <MoneyInput label="Current Amount" handleChange={this.handleChange('currentAmount')} />
-        <input className="form-control" type="text" placeholder="interest" onChange={this.handleChange('interestRate')} />
+      <div>
+        <Input id="name" label="Loan" onChange={this.handleChange('name')} placeholder="Chase Credit Card" />
+        <Input id="originalAmount" type="number" label="Original Amount" placeholder="300" handleChange={this.handleChange('originalAmount')} />
+        <Input id="currentAmount" type="number" label="Current Amount" placeholder="200" handleChange={this.handleChange('currentAmount')} />
+        <Input id="interestRate" label="Interest" type="number" placeholder="8.5" onChange={this.handleChange('interestRate')} />
         <DatePicker label="Start Date" id="startDate" handleChange={this.handleChange('startDate')} />
-      </form>
+      </div>
     );
   }
 }
